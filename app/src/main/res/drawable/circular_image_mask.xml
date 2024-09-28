@@ -1,0 +1,4 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="#ffffff" /> <!-- 遮罩为白色，用来裁剪图片 -->
+</shape>

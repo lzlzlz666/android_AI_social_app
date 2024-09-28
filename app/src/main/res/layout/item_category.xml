@@ -1,0 +1,66 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_margin="8dp"
+    android:background="@color/white">
+
+
+    <!-- RecyclerView 显示的部分 -->
+    <FrameLayout
+        android:layout_width="170dp"
+        android:layout_height="170dp">
+
+        <!-- 图片 -->
+        <ImageView
+            android:id="@+id/categoryImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/wrx" />
+
+        <!-- 垃圾桶按钮，默认隐藏，点击删除选项后显示 -->
+        <ImageView
+            android:id="@+id/deleteButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/baseline_delete_24"
+            android:layout_gravity="top|end"
+            android:visibility="gone"
+            app:tint="@color/red" /> <!-- 使用 app:tint 改变图标颜色 -->
+
+        <!-- 垃圾桶按钮，默认隐藏，点击删除选项后显示 -->
+        <ImageView
+            android:id="@+id/updateButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/baseline_refresh_24"
+            android:layout_gravity="top|end"
+            android:visibility="gone"
+            app:tint="@color/light_green" /> <!-- 使用 app:tint 改变图标颜色 -->
+    </FrameLayout>
+
+    <!-- 分类名称 -->
+    <TextView
+        android:id="@+id/categoryName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="种类"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:paddingTop="8dp"
+        android:textColor="@android:color/black" />
+
+    <!-- 分类别名 -->
+    <TextView
+        android:id="@+id/categoryAlias"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="别名"
+        android:gravity="center"
+        android:textSize="14sp"
+        android:paddingTop="4dp"
+        android:textColor="@android:color/darker_gray" />
+</LinearLayout>

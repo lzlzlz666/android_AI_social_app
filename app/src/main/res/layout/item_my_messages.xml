@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:gravity="center_horizontal">
+
+    <!-- 内部的水平布局，放置图标和文字 -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="1dp">
+
+        <!-- 左边的小图标 -->
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="10dp"
+            android:contentDescription="小图标"
+            android:src="@drawable/baseline_star_outline_24" />
+
+        <!-- 右边的文字内容 -->
+        <TextView
+            android:id="@+id/contentText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="内容"
+            android:textSize="25sp"
+            android:textColor="#000000"
+            android:padding="4dp"
+            android:gravity="center_vertical"/>
+    </LinearLayout>
+
+    <!-- 美观的按钮 -->
+    <Button
+        android:id="@+id/exitButton"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:text="我要退出"
+        android:textSize="22sp"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="@color/light_blue"
+        android:layout_marginTop="20dp"
+        android:padding="12dp"
+        android:elevation="4dp"/>
+
+
+</LinearLayout>
