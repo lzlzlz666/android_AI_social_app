@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_item1"
+        android:title="历史记录 1"/>
+    <item
+        android:id="@+id/nav_item2"
+        android:title="历史记录 2"/>
+    <item
+        android:id="@+id/nav_item3"
+        android:title="历史记录 3"/>
+</menu>
