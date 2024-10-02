@@ -10,7 +10,9 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.PopupMenu
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -18,6 +20,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.sqltest2.api.ApiUserService.getUserInfo
 import com.example.sqltest2.api.ChatService
 import com.example.sqltest2.models.ChatMessage
 import com.example.sqltest2.utils.JWTStorageHelper
@@ -30,33 +34,30 @@ import com.iflytek.sparkchain.core.SparkChainConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.Call
-import okhttp3.Callback
 import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
 import org.json.JSONArray
 import org.json.JSONObject
-import java.io.IOException
 
 class UnknownFragment : Fragment() {
-    private val client = OkHttpClient()
+    private lateinit var client: OkHttpClient
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var inputText: EditText
     private lateinit var sendButton: Button
     private lateinit var chatLLM: LLM
-    private val chatMessages = mutableListOf<ChatMessage>() // 存储聊天记录
+    private val chatMessages = mutableListOf<ChatMessage>()
     private lateinit var chatAdapter: ChatAdapter
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
     private lateinit var gptImageView: ImageView
-    private val savedMessages = mutableListOf<ChatMessage>() // 存储已经保存过的消息
+    private lateinit var userInfoImageView: ImageView
+    private lateinit var usernameTextView: TextView
+    private val savedMessages = mutableListOf<ChatMessage>()
     private var currentConversationId: Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.activity_unknown_fragment, container, false)
 
@@ -64,13 +65,8 @@ class UnknownFragment : Fragment() {
         drawerLayout = view.findViewById(R.id.drawer_layout)
         navigationView = view.findViewById(R.id.nav_view)
 
-        val navView = view.findViewById<NavigationView>(R.id.nav_view)
-        val displayMetrics = resources.displayMetrics
-        val screenWidth = displayMetrics.widthPixels
-
-        val layoutParams = navView.layoutParams
-        layoutParams.width = (screenWidth * 0.8).toInt() // 80% 宽度
-        navView.layoutParams = layoutParams
+        userInfoImageView = view.findViewById(R.id.userInfo)
+        usernameTextView = view.findViewById(R.id.username)
 
         recyclerView = view.findViewById(R.id.recyclerView)
         inputText = view.findViewById(R.id.inputText)
@@ -80,14 +76,14 @@ class UnknownFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = chatAdapter
 
-        initSDK() // 初始化 SDK
+        initSDK()
 
         sendButton.setOnClickListener {
             val question = inputText.text.toString()
             if (question.isNotEmpty()) {
-                addMessage(question, true) // 添加用户消息
-                inputText.text.clear() // 清空输入框
-                sendMessage(question) // 调用 AI 进行回复
+                addMessage(question, true)
+                inputText.text.clear()
+                sendMessage(question)
             }
         }
 
@@ -97,14 +93,17 @@ class UnknownFragment : Fragment() {
         fetchConversationGroups()
         checkChatMessages()
 
+        // 调用获取用户信息的方法
+        fetchUserInfo()
+
         return view
     }
 
     private fun initSDK() {
         val config = SparkChainConfig.builder()
-            .appID("87911696") // 替换为你的 appID
-            .apiKey("60cae27277c84f7b0068e553df3ff601") // 替换为你的 apiKey
-            .apiSecret("ZTgyMDRiYmJjYTZiZTg4MmEyZDczOWQw") // 替换为你的 apiSecret
+            .appID("87911696")
+            .apiKey("60cae27277c84f7b0068e553df3ff601")
+            .apiSecret("ZTgyMDRiYmJjYTZiZTg4MmEyZDczOWQw")
 
         val result = SparkChain.getInst().init(requireContext(), config)
         if (result != 0) {
@@ -116,6 +115,32 @@ class UnknownFragment : Fragment() {
         chatLLM = LLMFactory.textGeneration(memory)
     }
 
+    // 获取用户信息并更新UI
+    private fun fetchUserInfo() {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val (user, errorMessage) = getUserInfo(requireContext())
+            withContext(Dispatchers.Main) {
+                if (user != null) {
+                    // 更新用户头像和用户名
+                    usernameTextView.text = user.username
+
+                    // 设置头像，假设图片的 URL 或 drawable 已经在 user.avatar 中
+                    val avatarUrl = user.userPic  // 假设获取到的是URL
+                    loadUserAvatar(avatarUrl)
+                } else {
+                    Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    private fun loadUserAvatar(avatarUrl: String) {
+        Glide.with(this)
+            .load(avatarUrl) // 如果是 URL
+            .placeholder(R.drawable.loading) // 加载过程中显示默认头像
+            .into(userInfoImageView)
+    }
+
     private fun sendMessage(question: String) {
         lifecycleScope.launch {
             try {
@@ -123,14 +148,12 @@ class UnknownFragment : Fragment() {
                     chatLLM.run(question)
                 }
                 val aiResponse = syncOutput.getContent()
-                addMessage(aiResponse, false) // 添加 AI 的回复
+                addMessage(aiResponse, false)
 
-                // 只在这里保存 AI 的回复
                 if (currentConversationId != null) {
                     saveChatMessages(currentConversationId!!)
                 }
 
-                // 在消息发送和添加后，检查消息状态，隐藏或显示图标
                 checkChatMessages()
 
             } catch (e: Exception) {
@@ -157,6 +180,7 @@ class UnknownFragment : Fragment() {
         val aiMenu = PopupMenu(requireContext(), view)
         aiMenu.menuInflater.inflate(R.menu.ai_menu, aiMenu.menu)
 
+        // 强制显示图标（适用于某些情况下图标不显示的问题）
         try {
             val fields = aiMenu.javaClass.declaredFields
             for (field in fields) {
@@ -173,26 +197,28 @@ class UnknownFragment : Fragment() {
             e.printStackTrace()
         }
 
+        // 设置菜单项点击事件
         aiMenu.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.save_option -> {
-                    showSaveDialog(requireContext())
+                    showSaveDialog(requireContext()) // 调用保存对话框
                     true
                 }
                 R.id.claer_option -> {
-                    clearChatHistory()
-                    checkChatMessages()
+                    clearChatHistory()  // 调用清空聊天历史
+                    checkChatMessages() // 检查并更新 UI
                     true
                 }
                 R.id.history_option -> {
-                    drawerLayout.openDrawer(GravityCompat.START)
+                    drawerLayout.openDrawer(GravityCompat.START)  // 打开侧边栏
                     true
                 }
                 else -> false
             }
         }
-        aiMenu.show()
+        aiMenu.show() // 显示菜单
     }
+
 
     private fun showSaveDialog(context: Context) {
         val builder = AlertDialog.Builder(context)
@@ -274,25 +300,39 @@ class UnknownFragment : Fragment() {
     }
 
     private fun updateMenu(dataArray: JSONArray) {
-        val menu = navigationView.menu
-        menu.clear()
+        val historyContainer = view?.findViewById<LinearLayout>(R.id.historyContainer)
+        historyContainer?.removeAllViews()
 
         for (i in 0 until dataArray.length()) {
             val itemObject = dataArray.getJSONObject(i)
             val conversationName = itemObject.getString("conversationName")
             val conversationId = itemObject.getInt("conversationId")
 
-            val menuItem = menu.add(conversationName)
-            menuItem.setOnMenuItemClickListener {
-                currentConversationId = conversationId
-                fetchMessagesByConversationId(conversationId)
-                Toast.makeText(requireContext(), "点击了对话: $conversationName", Toast.LENGTH_SHORT).show()
-                true
+            val menuItem = TextView(requireContext()).apply {
+                text = conversationName
+                textSize = 16f
+                setPadding(50, 16, 16, 16) // 可选: 设置内容的 padding
+                setOnClickListener {
+                    currentConversationId = conversationId
+                    fetchMessagesByConversationId(conversationId)
+                    Toast.makeText(requireContext(), "点击了对话: $conversationName", Toast.LENGTH_SHORT).show()
+                }
             }
-        }
 
-        navigationView.invalidate()
+            // 设置 TextView 的外边距（margin）
+            val layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, // 宽度为 match_parent
+                LinearLayout.LayoutParams.WRAP_CONTENT  // 高度为 wrap_content
+            ).apply {
+                setMargins(0, 20, 0, 20) // 设置 margin 值，top 和 bottom 为 20px
+            }
+
+            menuItem.layoutParams = layoutParams
+
+            historyContainer?.addView(menuItem)
+        }
     }
+
 
     private fun clearChatHistory() {
         chatMessages.clear()

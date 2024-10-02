@@ -35,7 +35,6 @@
                 android:layout_marginEnd="16dp"/>
         </RelativeLayout>
 
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -89,36 +88,126 @@
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
-        app:menu="@menu/drawer_menu">
+        android:layout_gravity="start">
 
-        <!-- 添加顶部标题 -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="历史询问记录"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:background="@color/white"/>
-
-        <!-- 菜单内容 -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_gravity="bottom"
-            android:padding="16dp">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
+            <!-- 固定的顶部部分 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="历史询问记录"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:background="@color/white" />
+
+            <!-- 灰色间隔行 -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <ImageView
+                    android:id="@+id/new_image"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/circular_image"
+                    android:clipToOutline="true"
+                    android:src="@drawable/gpt" />
+
+                <TextView
+                    android:id="@+id/new_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="ChatGPT"
+                    android:layout_gravity="center"
+                    android:textSize="15sp"
+                    android:textColor="@android:color/black"/>
+            </LinearLayout>
+
+            <!-- 灰色间隔行 -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray" />
+
+            <!-- 中间部分可以滚动 -->
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:fillViewport="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- 动态添加历史记录的容器 -->
+                    <LinearLayout
+                        android:id="@+id/historyContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"/>
+
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+
+            <!-- 灰色间隔行 -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray" />
+
+            <!-- 固定的底部部分 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <ImageView
+                    android:id="@+id/userInfo"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/circular_image"
+                    android:src="@drawable/wrx"
+                    android:clipToOutline="true"/>
+
+                <TextView
+                    android:id="@+id/username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="lin林先生"
+                    android:layout_gravity="center"
+                    android:textSize="15sp"
+                    android:textColor="@android:color/black"/>
+            </LinearLayout>
+
+            <!-- 底部感谢信息 -->
             <TextView
                 android:id="@+id/footer_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="16dp"
                 android:text="感谢你使用我们的应用--lz"
                 android:textSize="14sp"
                 android:textColor="@android:color/darker_gray" />
 
         </LinearLayout>
+
     </com.google.android.material.navigation.NavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>

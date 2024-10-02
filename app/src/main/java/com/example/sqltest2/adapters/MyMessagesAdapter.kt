@@ -34,18 +34,19 @@ class MyMessagesAdapter(
         if (message.content == "我的信息") {
             // 设置点击事件
             holder.itemView.setOnClickListener {
-                // 变色
-                holder.itemView.setBackgroundColor(Color.LTGRAY)  // 你可以选择任何颜色
-                // 跳转到新界面
                 val intent = Intent(holder.itemView.context, MyAllInfoActivity::class.java)
                 holder.itemView.context.startActivity(intent)
             }
         }
         else if(message.content == "修改密码") {
             holder.itemView.setOnClickListener {
-                holder.itemView.setBackgroundColor(Color.LTGRAY)
-
                 val intent = Intent(holder.itemView.context, UpdartePasswordActivity::class.java)
+                holder.itemView.context.startActivity(intent)
+            }
+        }
+        else if(message.content == "我的主题") {
+            holder.itemView.setOnClickListener {
+                val intent = Intent(holder.itemView.context, selectThemeActivity::class.java)
                 holder.itemView.context.startActivity(intent)
             }
         }

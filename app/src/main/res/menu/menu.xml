@@ -9,7 +9,7 @@
     <item
         android:id="@+id/what"
         android:icon="@drawable/baseline_search_24"
-        android:title="未知" />
+        android:title="AI互动" />
 
     <item
         android:id="@+id/myInfo"
