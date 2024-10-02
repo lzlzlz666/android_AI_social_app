@@ -6,24 +6,72 @@ import com.example.sqltest2.R
 import com.example.sqltest2.model.Category
 import com.example.sqltest2.models.CategoryItem
 import com.example.sqltest2.utils.JWTStorageHelper
-import okhttp3.MediaType
-import okhttp3.MediaType.Companion.toMediaType
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
-import java.io.IOException
 import org.json.JSONArray
 import org.json.JSONObject
-import kotlin.random.Random
+import java.io.IOException
+
+// ThemeApiService 导入
+import com.example.sqltest2.api.ThemeApiService
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
+
 
 object ApiCategoryService {
 
     private val client = OkHttpClient()
 
-    // 获取分类数据，增加错误处理并加入 JWT 令牌
-    fun getCategories(context: Context): Pair<List<CategoryItem>?, String?> {
+    // 全局变量来保存从 getCategories 函数中获取的 userThemeName
+    private var userThemeName: String? = null
+
+    // 获取用户的主题 ID
+    private suspend fun getUserTheme(context: Context): Int? {
+        return withContext(Dispatchers.IO) {
+            val token = JWTStorageHelper.getJwtToken(context)
+
+            if (token == null) {
+                Log.e("ApiCategoryService", "JWT 令牌不存在")
+                return@withContext null
+            }
+
+            val request = Request.Builder()
+                .url("${com.example.sqltest2.utils.Constants.BASE_URL}/theme/userTheme")
+                .addHeader("Authorization", token)
+                .get()
+                .build()
+
+            return@withContext try {
+                val response: Response = client.newCall(request).execute()
+
+                if (!response.isSuccessful) {
+                    Log.e("ApiCategoryService", "Failed to fetch user theme: ${response.code}")
+                    return@withContext null
+                }
+
+                val responseData = response.body?.string() ?: return@withContext null
+                val jsonResponse = JSONObject(responseData)
+                val code = jsonResponse.getInt("code")
+
+                if (code == 0) {
+                    val data = jsonResponse.getJSONObject("data")
+                    return@withContext data.getInt("userTheme")
+                } else {
+                    Log.e("ApiCategoryService", "Failed to get user theme: ${jsonResponse.getString("message")}")
+                    return@withContext null
+                }
+            } catch (e: IOException) {
+                Log.e("ApiCategoryService", "Exception during fetching user theme", e)
+                return@withContext null
+            }
+        }
+    }
+
+    // 根据用户的主题加载分类数据并动态调整图片
+    suspend fun getCategories(context: Context): Pair<List<CategoryItem>?, String?> {
         val token = JWTStorageHelper.getJwtToken(context)
 
         if (token == null) {
@@ -31,83 +79,87 @@ object ApiCategoryService {
             return Pair(null, "用户未登录或 JWT 令牌不存在")
         }
 
-        Log.d("ApiCategoryService", "JWT 令牌: Bearer $token")
+        // 获取用户的主题 ID
+        val userThemeId = getUserTheme(context) ?: return Pair(null, "无法获取用户主题")
 
-        // 构建请求并在 Authorization 头中加入 JWT 令牌
+        // 调用封装好的 `ThemeApiService.getThemes()` 来获取所有主题信息
+        val themes = ThemeApiService().getThemes(context).first ?: return Pair(null, "无法获取主题列表")
+
+        // 根据 userThemeId 找到对应的 themeName
+        val userTheme = themes.find { it.themeId == userThemeId } ?: return Pair(null, "无法匹配用户主题")
+
+        // 保存主题名称到全局变量
+        userThemeName = userTheme.themeName
+
+        // 构建分类数据请求
         val request = Request.Builder()
             .url("${com.example.sqltest2.utils.Constants.BASE_URL}/category")
-            .addHeader("Authorization", token)  // 添加 JWT 令牌到请求头
+            .addHeader("Authorization", token)
             .get()
             .build()
 
-        return try {
-            val response: Response = client.newCall(request).execute()
+        return withContext(Dispatchers.IO) {
+            try {
+                val response: Response = client.newCall(request).execute()
 
-            // 检查响应码
-            if (!response.isSuccessful) {
-                Log.e("ApiService", "Request failed with code: ${response.code}")
-                return Pair(null, "请求失败，请稍后重试。")
-            }
-
-            val responseData = response.body?.string() ?: ""
-            val jsonResponse = JSONObject(responseData)
-
-            // 检查返回的 code 字段
-            val code = jsonResponse.getInt("code")
-            if (code == 0) {
-                val jsonArray: JSONArray = jsonResponse.getJSONArray("data")
-                val categoryList = ArrayList<CategoryItem>()
-
-                // 图片资源 ID 列表 1-10 的蜡笔小新图
-                val imageResources = listOf(
-                    R.drawable.labixiaoxin_1,
-                    R.drawable.labixiaoxin_2,
-                    R.drawable.labixiaoxin_3,
-                    R.drawable.labixiaoxin_4,
-                    R.drawable.labixiaoxin_5,
-                    R.drawable.labixiaoxin_6,
-                    R.drawable.labixiaoxin_7,
-                    R.drawable.labixiaoxin_8,
-                    R.drawable.labixiaoxin_9,
-                    R.drawable.labixiaoxin_10
-                )
-
-                // 将图片资源列表随机打乱，避免重复
-                val shuffledImages = imageResources.toMutableList()
-                shuffledImages.shuffle()
-
-                for (i in 0 until jsonArray.length()) {
-                    val categoryObject = jsonArray.getJSONObject(i)
-                    val id = categoryObject.getInt("id")  // 提取 id
-                    val categoryName = categoryObject.getString("categoryName")
-                    val categoryAlias = categoryObject.getString("categoryAlias")
-
-                    // 分配图片，不重复，循环使用打乱的列表
-                    val imageIndex = i % shuffledImages.size
-                    val assignedImage = shuffledImages[imageIndex]
-
-                    // 创建 CategoryItem，包含 id、图片、名称和别名
-                    categoryList.add(CategoryItem(id, assignedImage, categoryName, categoryAlias))
+                if (!response.isSuccessful) {
+                    Log.e("ApiService", "Request failed with code: ${response.code}")
+                    return@withContext Pair(null, "请求失败，请稍后重试。")
                 }
 
-                // 返回成功的数据和 null 错误
-                return Pair(categoryList, null)
+                val responseData = response.body?.string() ?: ""
+                val jsonResponse = JSONObject(responseData)
 
-            } else if (code == 1) {
-                Log.e("ApiService", "Operation failed: ${jsonResponse.getString("message")}")
-                return Pair(null, jsonResponse.getString("message"))
-            } else {
-                Log.e("ApiService", "Unknown code: $code")
-                return Pair(null, "未知错误，请稍后重试。")
+                val code = jsonResponse.getInt("code")
+                if (code == 0) {
+                    val jsonArray: JSONArray = jsonResponse.getJSONArray("data")
+                    val categoryList = ArrayList<CategoryItem>()
+
+                    // 根据 themeName 动态加载图片资源
+                    val imageResources = if (userTheme.themeName == "ordinary") {
+                        // 如果是 "ordinary"，只放一张固定的图片
+                        listOf(R.drawable.wenjianjia)
+                    } else {
+                        // 动态生成 10 张图片的资源 ID，格式为 themeName_1 到 themeName_10
+                        val resourceList = mutableListOf<Int>()
+                        for (i in 1..10) {
+                            val resourceId = context.resources.getIdentifier(
+                                "${userTheme.themeName}_$i",
+                                "drawable",
+                                context.packageName
+                            )
+                            if (resourceId != 0) {
+                                resourceList.add(resourceId)
+                            } else {
+                                Log.e("ApiCategoryService", "无法找到资源: ${userTheme.themeName}_$i")
+                            }
+                        }
+                        resourceList
+                    }
+
+                    for (i in 0 until jsonArray.length()) {
+                        val categoryObject = jsonArray.getJSONObject(i)
+                        val id = categoryObject.getInt("id")
+                        val categoryName = categoryObject.getString("categoryName")
+                        val categoryAlias = categoryObject.getString("categoryAlias")
+
+                        val imageIndex = i % imageResources.size
+                        val assignedImage = imageResources[imageIndex]
+
+                        categoryList.add(CategoryItem(id, assignedImage, categoryName, categoryAlias))
+                    }
+
+                    return@withContext Pair(categoryList, null)
+                } else {
+                    return@withContext Pair(null, jsonResponse.getString("message"))
+                }
+
+            } catch (e: IOException) {
+                Log.e("ApiService", "Exception during API request", e)
+                return@withContext Pair(null, "网络错误，请检查网络连接。")
             }
-
-        } catch (e: IOException) {
-            Log.e("ApiService", "Exception during API request", e)
-            return Pair(null, "网络错误，请检查网络连接。")
         }
     }
-
-
 
     // 新增分类
     fun addCategory(context: Context, category: Category): Pair<Boolean, String?> {
@@ -218,7 +270,7 @@ object ApiCategoryService {
         }
     }
 
-    // 根据关键词搜索分类
+    // 根据关键词搜索分类，并动态渲染图片
     fun searchCategories(context: Context, query: String): Pair<List<CategoryItem>?, String?> {
         val token = JWTStorageHelper.getJwtToken(context) ?: return Pair(null, "用户未登录")
 
@@ -242,29 +294,36 @@ object ApiCategoryService {
                 val jsonArray: JSONArray = jsonResponse.getJSONArray("data")
                 val categoryList = ArrayList<CategoryItem>()
 
-                val imageResources = listOf(
-                    R.drawable.labixiaoxin_1,
-                    R.drawable.labixiaoxin_2,
-                    R.drawable.labixiaoxin_3,
-                    R.drawable.labixiaoxin_4,
-                    R.drawable.labixiaoxin_5,
-                    R.drawable.labixiaoxin_6,
-                    R.drawable.labixiaoxin_7,
-                    R.drawable.labixiaoxin_8,
-                    R.drawable.labixiaoxin_9,
-                    R.drawable.labixiaoxin_10
-                )
-
-                val shuffledImages = imageResources.toMutableList()
-                shuffledImages.shuffle()
+                // 根据全局变量 `userThemeName` 动态渲染图片资源
+                val imageResources = if (userThemeName == "ordinary") {
+                    // 如果是 "ordinary"，只放一张固定的图片
+                    listOf(R.drawable.wenjianjia)
+                } else {
+                    // 动态生成 10 张图片的资源 ID，格式为 themeName_1 到 themeName_10
+                    val resourceList = mutableListOf<Int>()
+                    for (i in 1..10) {
+                        val resourceId = context.resources.getIdentifier(
+                            "${userThemeName}_$i",
+                            "drawable", // 资源类型
+                            context.packageName // 包名
+                        )
+                        if (resourceId != 0) {
+                            resourceList.add(resourceId)
+                        } else {
+                            Log.e("ApiCategoryService", "无法找到资源: ${userThemeName}_$i")
+                        }
+                    }
+                    resourceList
+                }
 
                 for (i in 0 until jsonArray.length()) {
                     val categoryObject = jsonArray.getJSONObject(i)
                     val id = categoryObject.getInt("id")
                     val categoryName = categoryObject.getString("categoryName")
                     val categoryAlias = categoryObject.getString("categoryAlias")
-                    val imageIndex = i % shuffledImages.size
-                    val assignedImage = shuffledImages[imageIndex]
+
+                    val imageIndex = i % imageResources.size
+                    val assignedImage = imageResources[imageIndex]
 
                     categoryList.add(CategoryItem(id, assignedImage, categoryName, categoryAlias))
                 }

@@ -8,6 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.Response
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.IOException
@@ -71,4 +72,40 @@ class ThemeApiService(private val client: OkHttpClient = OkHttpClient()) {
             }
         }
     }
+
+    // 使用 PUT 请求更新用户的主题
+    suspend fun updateUserTheme(context: Context, themeId: Int): Pair<Int, String?> {
+        return withContext(Dispatchers.IO) {
+            val token = JWTStorageHelper.getJwtToken(context)
+
+            if (token == null) {
+                Log.e("ThemeApiService", "JWT 令牌不存在")
+                return@withContext Pair(-1, "用户未登录或 JWT 令牌不存在")
+            }
+
+            Log.d("ThemeApiService", "JWT 令牌: Bearer $token")
+
+            val request = Request.Builder()
+                .url("${com.example.sqltest2.utils.Constants.BASE_URL}/theme?userTheme=$themeId")
+                .addHeader("Authorization", token)  // 自动从 JWTStorageHelper 获取 token
+                .put(okhttp3.RequestBody.create(null, ByteArray(0)))  // 空请求体
+                .build()
+
+            return@withContext try {
+                val response: Response = client.newCall(request).execute()
+
+                if (!response.isSuccessful) {
+                    Log.e("ThemeApiService", "Failed to update theme: ${response.code}")
+                    Pair(response.code, "请求失败，请稍后重试。")
+                } else {
+                    val responseData = response.body?.string()
+                    Pair(0, responseData)  // 返回成功状态
+                }
+            } catch (e: IOException) {
+                Log.e("ThemeApiService", "Exception during updating theme", e)
+                Pair(-1, "网络错误，请检查网络连接。")
+            }
+        }
+    }
+
 }
