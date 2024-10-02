@@ -22,17 +22,19 @@
 
         <!-- 圆形头像 -->
         <androidx.cardview.widget.CardView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
             android:layout_gravity="center"
-            app:cardCornerRadius="75dp"
+            app:cardCornerRadius="80dp"
             app:cardElevation="4dp"
-            android:layout_margin="8dp">
+            android:layout_margin="8dp"
+            app:cardBackgroundColor="@android:color/white">
 
             <ImageView
                 android:id="@+id/profileImage"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center"
                 android:scaleType="centerCrop"
                 android:src="@drawable/loading"
                 android:contentDescription="Profile Picture"/>
@@ -47,5 +49,4 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:background="@color/white"/>
-
 </LinearLayout>

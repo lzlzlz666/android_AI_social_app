@@ -3,8 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/login_background"
     android:padding="16dp">
 
+    <TextView
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="0dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:text="欢迎注册"
+        android:textSize="30dp"
+        android:layout_gravity="center"/>
     <!-- 用户名输入框 -->
     <EditText
         android:id="@+id/username"
@@ -30,6 +40,8 @@
         android:id="@+id/registerButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/teal"
+        android:textSize="16sp"
         android:text="注册"
         android:layout_marginTop="20dp"/>
 
