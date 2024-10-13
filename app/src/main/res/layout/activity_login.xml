@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/login_background"
+    android:background="@drawable/loginbg"
     android:orientation="vertical"
     android:padding="16dp">
 
@@ -13,13 +13,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
+        android:textColor="#26C6DA"
         android:text="欢迎登录"
-        android:textSize="30dp"
+        android:textSize="30sp"
         android:layout_gravity="center"/>
+
     <!-- 用户名输入框 -->
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColorHint="#ffffff"
+        app:boxStrokeColor="@android:color/white"
+        app:boxBackgroundColor="@android:color/transparent"
+        app:hintTextColor="@color/white"
         android:hint="用户名">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -27,6 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
+            android:textColor="#ffffff"
             android:padding="10dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -35,7 +42,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="密码"
+        android:textColorHint="#ffffff"
+        app:boxStrokeColor="@android:color/white"
+        app:boxBackgroundColor="@android:color/transparent"
         app:endIconMode="password_toggle"
+        app:hintTextColor="@color/white"
         android:layout_marginTop="10dp">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -43,6 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
+            android:textColor="#ffffff"
             android:padding="10dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -64,7 +76,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="我还没有账号了，点击注册"
-        android:textColor="@android:color/holo_blue_light"
+        android:textColor="#C5E1A5"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:clickable="true"/>

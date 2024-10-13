@@ -1,39 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/login_background"
+    android:background="@drawable/registerbg"
     android:padding="16dp">
 
+    <!-- 欢迎文本 -->
     <TextView
-        android:layout_marginTop="50dp"
-        android:layout_marginBottom="0dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
         android:text="欢迎注册"
-        android:textSize="30dp"
-        android:layout_gravity="center"/>
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:textColor="#26C6DA"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="30dp"/>
+
     <!-- 用户名输入框 -->
-    <EditText
-        android:id="@+id/username"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/usernameLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="用户名"
-        android:inputType="textPersonName"
-        android:padding="10dp"
-        android:layout_marginTop="60dp"/>
+        android:textColorHint="#ffffff"
+        app:boxStrokeColor="@android:color/white"
+        app:hintTextColor="@color/white"
+        app:counterEnabled="true"
+        app:counterMaxLength="16"
+        app:errorEnabled="true"
+        android:layout_marginTop="16dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:maxLength="16"
+            android:textColor="#ffffff"
+            android:padding="10dp" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <!-- 密码输入框 -->
-    <EditText
-        android:id="@+id/password"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/passwordLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="密码"
-        android:inputType="textPassword"
-        android:padding="10dp"
-        android:layout_marginTop="10dp"/>
+        android:textColorHint="#ffffff"
+        app:boxStrokeColor="@android:color/white"
+        app:hintTextColor="@color/white"
+        app:endIconMode="password_toggle"
+        android:layout_marginTop="16dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:textColor="#ffffff"
+            android:padding="10dp" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <!-- 注册按钮 -->
     <Button
@@ -41,9 +70,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/teal"
-        android:textSize="16sp"
         android:text="注册"
-        android:layout_marginTop="20dp"/>
+        android:textSize="16sp"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="24dp"/>
 
     <!-- 登录跳转文本 -->
     <TextView
@@ -51,8 +81,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="我有账号了，点击登录"
-        android:textColor="@android:color/holo_blue_light"
+        android:textColor="#C5E1A5"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="24dp"
         android:clickable="true"/>
+
 </LinearLayout>
