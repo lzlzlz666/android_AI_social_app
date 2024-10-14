@@ -17,6 +17,7 @@ import java.io.IOException
 
 // ThemeApiService 导入
 import com.example.sqltest2.api.ThemeApiService
+import com.example.sqltest2.models.ArticleItem
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 
@@ -338,4 +339,51 @@ object ApiCategoryService {
             return Pair(null, "网络错误，请检查网络连接。")
         }
     }
+
+    // ApiCategoryService.kt
+    suspend fun getArticlesForCategory(context: Context, categoryId: Int): Pair<List<ArticleItem>?, String?> {
+        val token = JWTStorageHelper.getJwtToken(context)
+        if (token == null) {
+            Log.e("ApiCategoryService", "JWT 令牌不存在")
+            return Pair(null, "用户未登录，无法获取文章列表")
+        }
+
+        val request = Request.Builder()
+            .url("${com.example.sqltest2.utils.Constants.BASE_URL}/article?pageNum=1&pageSize=5&categoryId=$categoryId&state=草稿")
+            .addHeader("Authorization", token)
+            .get()
+            .build()
+
+        return withContext(Dispatchers.IO) {
+            try {
+                val response: Response = client.newCall(request).execute()
+
+                if (!response.isSuccessful) {
+                    Log.e("ApiCategoryService", "请求失败，代码：${response.code}")
+                    return@withContext Pair(null, "请求失败，请稍后重试。")
+                }
+
+                val responseData = response.body?.string()
+                val jsonResponse = JSONObject(responseData)
+                val articlesJsonArray: JSONArray = jsonResponse.getJSONObject("data").getJSONArray("items")
+
+                val articleList = ArrayList<ArticleItem>()
+                for (i in 0 until articlesJsonArray.length()) {
+                    val articleObject = articlesJsonArray.getJSONObject(i)
+                    val id = articleObject.getInt("id")
+                    val title = articleObject.getString("title")
+                    val content = articleObject.getString("content")
+                    val createUser = articleObject.getInt("createUser")
+                    val createTime = articleObject.getString("createTime")
+                    articleList.add(ArticleItem(title, content, createUser, createTime, R.drawable.wrx))
+                }
+
+                Pair(articleList, null)
+            } catch (e: IOException) {
+                Log.e("ApiCategoryService", "网络错误", e)
+                Pair(null, "网络错误，请检查网络连接")
+            }
+        }
+    }
+
 }

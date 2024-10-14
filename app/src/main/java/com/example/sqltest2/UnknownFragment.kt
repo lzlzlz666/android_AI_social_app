@@ -312,10 +312,16 @@ class UnknownFragment : Fragment() {
                 text = conversationName
                 textSize = 16f
                 setPadding(50, 16, 16, 16) // 可选: 设置内容的 padding
+
                 setOnClickListener {
                     currentConversationId = conversationId
                     fetchMessagesByConversationId(conversationId)
                     Toast.makeText(requireContext(), "点击了对话: $conversationName", Toast.LENGTH_SHORT).show()
+                }
+
+                setOnLongClickListener {
+                    showOptionsMenu(it, conversationName, conversationId)
+                    true
                 }
             }
 
@@ -330,6 +336,79 @@ class UnknownFragment : Fragment() {
             menuItem.layoutParams = layoutParams
 
             historyContainer?.addView(menuItem)
+        }
+    }
+
+    private fun showOptionsMenu(view: View, conversationName: String, conversationId: Int) {
+        val popupMenu = PopupMenu(requireContext(), view)
+        popupMenu.menuInflater.inflate(R.menu.history_menu, popupMenu.menu) // 创建一个菜单资源
+
+        popupMenu.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.rename_option -> {
+                    showRenameDialog(conversationName, conversationId)
+                    true
+                }
+                R.id.delete_option -> {
+                    deleteConversation(conversationId)
+                    true
+                }
+                else -> false
+            }
+        }
+
+        popupMenu.show()
+    }
+
+    private fun showRenameDialog(oldName: String, conversationId: Int) {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("重命名对话")
+
+        val input = EditText(requireContext()).apply {
+            setText(oldName)
+        }
+        builder.setView(input)
+
+        builder.setPositiveButton("确认") { _, _ ->
+            val newName = input.text.toString()
+            if (newName.isNotEmpty()) {
+                renameConversation(conversationId, newName)
+            } else {
+                Toast.makeText(requireContext(), "名称不能为空", Toast.LENGTH_SHORT).show()
+            }
+        }
+        builder.setNegativeButton("取消") { dialog, _ -> dialog.cancel() }
+
+        builder.show()
+    }
+
+    private fun renameConversation(conversationId: Int, newName: String) {
+        lifecycleScope.launch {
+            val chatService = ChatService(requireContext())
+            val success = chatService.updateConversationName(conversationId, newName) // 调用更新接口
+            if (success) {
+                Toast.makeText(requireContext(), "对话名称已更新", Toast.LENGTH_SHORT).show()
+                fetchConversationGroups() // 重新加载对话组以更新 UI
+            } else {
+                Toast.makeText(requireContext(), "更新名称失败", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+
+    private fun deleteConversation(conversationId: Int) {
+        lifecycleScope.launch {
+            val chatService = ChatService(requireContext())
+            val success = chatService.deleteConversation(conversationId)
+
+            if (success) {
+                Toast.makeText(requireContext(), "对话已删除", Toast.LENGTH_SHORT).show()
+                clearChatHistory()  // 调用清空聊天历史
+                checkChatMessages() // 检查并更新 UI
+                fetchConversationGroups() // 重新渲染对话组
+            } else {
+                Toast.makeText(requireContext(), "删除对话失败", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

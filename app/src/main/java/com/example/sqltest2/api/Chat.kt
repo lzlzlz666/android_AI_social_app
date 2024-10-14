@@ -180,6 +180,48 @@ class ChatService(private val context: Context) {
         })
     }
 
+    suspend fun deleteConversation(conversationId: Int): Boolean {
+        val token = JWTStorageHelper.getJwtToken(context) ?: return false
+
+        val url = "${com.example.sqltest2.utils.Constants.BASE_URL}/chat?conversationId=$conversationId"
+        val request = Request.Builder()
+            .url(url)
+            .addHeader("Authorization", token)
+            .delete()
+            .build()
+
+        return withContext(Dispatchers.IO) {
+            client.newCall(request).execute().use { response ->
+                response.isSuccessful
+            }
+        }
+    }
+
+    suspend fun updateConversationName(conversationId: Int, newName: String): Boolean {
+        val token = JWTStorageHelper.getJwtToken(context) ?: return false
+
+        val url = "${com.example.sqltest2.utils.Constants.BASE_URL}/chat/update"
+        val jsonBody = JSONObject().apply {
+            put("conversationId", conversationId)
+            put("conversationName", newName)
+        }.toString()
+
+        val request = Request.Builder()
+            .url(url)
+            .addHeader("Authorization", token)
+            .put(RequestBody.create("application/json; charset=utf-8".toMediaType(), jsonBody))
+            .build()
+
+        return withContext(Dispatchers.IO) {
+            client.newCall(request).execute().use { response ->
+                response.isSuccessful
+            }
+        }
+    }
+
+
+
+
 }
 
 
