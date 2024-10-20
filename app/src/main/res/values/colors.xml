@@ -44,4 +44,6 @@
     <color name="light_green">#FF8BC34A</color>
     <color name="blue_gray">#FF607D8B</color>
 
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="transparent">#00FFFFFF</color>
 </resources>

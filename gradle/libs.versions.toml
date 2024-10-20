@@ -14,6 +14,7 @@ recyclerview = "1.3.2"
 gson = "2.8.9"  # 定义 Gson 版本
 glide = "4.12.0"  # 添加 Glide 版本
 retrofit = "2.9.0"  # Retrofit 版本
+gridlayout = "1.1.0"
 
 [libraries]
 # Retrofit 和相关依赖
@@ -32,6 +33,7 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+androidx-gridlayout = { group = "androidx.gridlayout", name = "gridlayout", version.ref = "gridlayout" }
 
 
 [plugins]

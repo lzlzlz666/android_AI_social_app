@@ -107,7 +107,7 @@ class MyInfoFragment : Fragment() {
                         myMessagesList.add(MyMessages(message.myId, message.centent))
                     }
                     myMessagesAdapter.notifyDataSetChanged()
-                    Toast.makeText(context, "信息加载成功！", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(context, "信息加载成功！", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(requireContext(), errorMessage ?: "加载消息失败", Toast.LENGTH_SHORT).show()
                 }

@@ -116,7 +116,6 @@ class HomeFragment : Fragment() {
                     categories.clear()
                     categories.addAll(categoryItems)
                     categoryAdapter.notifyDataSetChanged()
-                    Toast.makeText(context, "数据加载成功！", Toast.LENGTH_SHORT).show()
                 }
             }
         }

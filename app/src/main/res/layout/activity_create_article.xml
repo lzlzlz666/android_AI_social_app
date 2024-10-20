@@ -1,11 +1,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:material="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
     android:background="#F5F5F5">
-
-    <!-- 设置比例布局 -->
 
     <TextView
         android:layout_width="match_parent"
@@ -19,8 +19,7 @@
     <EditText
         android:id="@+id/titleEditText"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:background="@drawable/rounded_edittext"
         android:hint="输入标题"
@@ -32,24 +31,39 @@
         android:id="@+id/contentEditText"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="6"
-        android:hint="输入内容"
+        android:layout_weight="1"
+        android:hint="请输入内容"
         android:background="@drawable/rounded_edittext"
         android:padding="16dp"
-        android:minHeight="100dp"
         android:gravity="top"
         android:textSize="16sp"
         android:textColor="#333333"
+        android:minHeight="100dp"
         android:layout_marginBottom="16dp"/>
 
-    <Spinner
-        android:id="@+id/stateSpinner"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/rounded_edittext"
-        android:padding="12dp"
-        android:textSize="16sp"
-        android:layout_marginBottom="16dp"/>
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="16dp">
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/stateSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:checked="true"/>
+
+        <TextView
+            android:id="@+id/stateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="草稿"
+            android:textSize="16sp"
+            android:layout_gravity="center"
+            android:layout_marginStart="8dp"/>
+    </LinearLayout>
 
     <Button
         android:id="@+id/saveButton"

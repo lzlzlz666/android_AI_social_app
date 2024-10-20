@@ -54,49 +54,52 @@ class UnknownFragment : Fragment() {
     private lateinit var usernameTextView: TextView
     private val savedMessages = mutableListOf<ChatMessage>()
     private var currentConversationId: Int? = null
+    private var isInitialized = false // 控制初始化状态
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.activity_unknown_fragment, container, false)
+        if (!isInitialized) {
+            isInitialized = true
+            val view = inflater.inflate(R.layout.activity_unknown_fragment, container, false)
 
-        gptImageView = view.findViewById(R.id.gptImage)
-        drawerLayout = view.findViewById(R.id.drawer_layout)
-        navigationView = view.findViewById(R.id.nav_view)
+            gptImageView = view.findViewById(R.id.gptImage)
+            drawerLayout = view.findViewById(R.id.drawer_layout)
+            navigationView = view.findViewById(R.id.nav_view)
+            userInfoImageView = view.findViewById(R.id.userInfo)
+            usernameTextView = view.findViewById(R.id.username)
 
-        userInfoImageView = view.findViewById(R.id.userInfo)
-        usernameTextView = view.findViewById(R.id.username)
+            recyclerView = view.findViewById(R.id.recyclerView)
+            inputText = view.findViewById(R.id.inputText)
+            sendButton = view.findViewById(R.id.sendButton)
 
-        recyclerView = view.findViewById(R.id.recyclerView)
-        inputText = view.findViewById(R.id.inputText)
-        sendButton = view.findViewById(R.id.sendButton)
+            chatAdapter = ChatAdapter(chatMessages)
+            recyclerView.layoutManager = LinearLayoutManager(context)
+            recyclerView.adapter = chatAdapter
 
-        chatAdapter = ChatAdapter(chatMessages)
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = chatAdapter
+            initSDK()
 
-        initSDK()
-
-        sendButton.setOnClickListener {
-            val question = inputText.text.toString()
-            if (question.isNotEmpty()) {
-                addMessage(question, true)
-                inputText.text.clear()
-                sendMessage(question)
+            sendButton.setOnClickListener {
+                val question = inputText.text.toString()
+                if (question.isNotEmpty()) {
+                    addMessage(question, true)
+                    inputText.text.clear()
+                    sendMessage(question)
+                }
             }
+
+            val moreOptions = view.findViewById<ImageView>(R.id.moreOptions)
+            moreOptions.setOnClickListener { showAiMenu(it) }
+
+            fetchConversationGroups()
+            checkChatMessages()
+            fetchUserInfo()
+
+            return view
+        } else {
+            return super.onCreateView(inflater, container, savedInstanceState)
         }
-
-        val moreOptions = view.findViewById<ImageView>(R.id.moreOptions)
-        moreOptions.setOnClickListener { showAiMenu(it) }
-
-        fetchConversationGroups()
-        checkChatMessages()
-
-        // 调用获取用户信息的方法
-        fetchUserInfo()
-
-        return view
     }
 
     private fun initSDK() {

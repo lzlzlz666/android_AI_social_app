@@ -32,6 +32,7 @@ class MyMessagesAdapter(
         holder.contentText.text = message.content
 
         if (message.content == "我的信息") {
+            holder.icon.setImageResource(R.drawable.myinfo)
             // 设置点击事件
             holder.itemView.setOnClickListener {
                 val intent = Intent(holder.itemView.context, MyAllInfoActivity::class.java)
@@ -39,12 +40,21 @@ class MyMessagesAdapter(
             }
         }
         else if(message.content == "修改密码") {
+            holder.icon.setImageResource(R.drawable.updatepas)
             holder.itemView.setOnClickListener {
                 val intent = Intent(holder.itemView.context, UpdartePasswordActivity::class.java)
                 holder.itemView.context.startActivity(intent)
             }
         }
+        else if(message.content == "发布信息") {
+            holder.icon.setImageResource(R.drawable.fabu)
+            holder.itemView.setOnClickListener {
+                val intent = Intent(holder.itemView.context, MessagesActivity::class.java)
+                holder.itemView.context.startActivity(intent)
+            }
+        }
         else if(message.content == "我的主题") {
+            holder.icon.setImageResource(R.drawable.theme)
             holder.itemView.setOnClickListener {
                 val intent = Intent(holder.itemView.context, selectThemeActivity::class.java)
                 holder.itemView.context.startActivity(intent)
@@ -62,7 +72,7 @@ class MyMessagesAdapter(
         }
 
         // 设置图标等其他逻辑
-        holder.icon.setImageResource(R.drawable.baseline_star_outline_24)
+//        holder.icon.setImageResource(R.drawable.baseline_star_outline_24)
     }
 
     override fun getItemCount(): Int {

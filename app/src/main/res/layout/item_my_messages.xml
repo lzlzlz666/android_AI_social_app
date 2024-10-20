@@ -12,12 +12,12 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        android:layout_marginBottom="1dp">
+        android:layout_marginBottom="8dp">
 
         <!-- 左边的小图标 -->
         <ImageView
             android:id="@+id/icon"
-            android:layout_width="40dp"
+            android:layout_width="50dp"
             android:layout_height="40dp"
             android:layout_marginEnd="10dp"
             android:contentDescription="小图标"

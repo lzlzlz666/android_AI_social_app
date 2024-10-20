@@ -18,6 +18,7 @@ import java.io.IOException
 // ThemeApiService 导入
 import com.example.sqltest2.api.ThemeApiService
 import com.example.sqltest2.models.ArticleItem
+import com.example.sqltest2.models.Item
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 
@@ -349,7 +350,7 @@ object ApiCategoryService {
         }
 
         val request = Request.Builder()
-            .url("${com.example.sqltest2.utils.Constants.BASE_URL}/article?pageNum=1&pageSize=5&categoryId=$categoryId&state=草稿")
+            .url("${com.example.sqltest2.utils.Constants.BASE_URL}/article?pageNum=1&pageSize=100&categoryId=$categoryId&state=草稿")
             .addHeader("Authorization", token)
             .get()
             .build()
@@ -386,4 +387,139 @@ object ApiCategoryService {
         }
     }
 
+    suspend fun getPublishedArticles(context: Context): Pair<List<Item>?, String?> {
+        val token = JWTStorageHelper.getJwtToken(context)
+        if (token == null) {
+            Log.e("ApiCategoryService", "JWT 令牌不存在")
+            return Pair(null, "用户未登录，无法获取已发布文章")
+        }
+
+        val request = Request.Builder()
+            .url("${com.example.sqltest2.utils.Constants.BASE_URL}/article/allArticleVTO?state=已发布")
+            .addHeader("Authorization", token)
+            .get()
+            .build()
+
+        return withContext(Dispatchers.IO) {
+            try {
+                val response: Response = client.newCall(request).execute()
+
+                if (!response.isSuccessful) {
+                    Log.e("ApiCategoryService", "请求失败，代码：${response.code}")
+                    return@withContext Pair(null, "请求失败，请稍后重试。")
+                }
+
+                val responseData = response.body?.string()
+                val jsonResponse = JSONObject(responseData)
+                val articlesJsonArray: JSONArray = jsonResponse.getJSONArray("data")
+
+                val itemList = ArrayList<Item>()
+                for (i in 0 until articlesJsonArray.length()) {
+                    val articleObject = articlesJsonArray.getJSONObject(i)
+                    val id = articleObject.getInt("id")
+                    val title = articleObject.getString("title")
+                    val content = articleObject.getString("content")
+                    val img = articleObject.getString("img")
+                    val createTime = articleObject.getString("createTime")
+                    val createUserName = articleObject.getString("createUserName")
+                    val createUserImg = articleObject.getString("createUserImg")
+                    itemList.add(Item(id, title, content, img,createTime, createUserName, createUserImg))
+                }
+
+                Pair(itemList, null)
+            } catch (e: IOException) {
+                Log.e("ApiCategoryService", "网络错误", e)
+                Pair(null, "网络错误，请检查网络连接")
+            }
+        }
+    }
+
+    suspend fun getPublishedMyArticles(context: Context): Pair<List<Item>?, String?> {
+        val token = JWTStorageHelper.getJwtToken(context)
+        if (token == null) {
+            Log.e("ApiCategoryService", "JWT 令牌不存在")
+            return Pair(null, "用户未登录，无法获取已发布文章")
+        }
+
+        val request = Request.Builder()
+            .url("${com.example.sqltest2.utils.Constants.BASE_URL}/article/MyArticleVTO?state=已发布")
+            .addHeader("Authorization", token)
+            .get()
+            .build()
+
+        return withContext(Dispatchers.IO) {
+            try {
+                val response: Response = client.newCall(request).execute()
+
+                if (!response.isSuccessful) {
+                    Log.e("ApiCategoryService", "请求失败，代码：${response.code}")
+                    return@withContext Pair(null, "请求失败，请稍后重试。")
+                }
+
+                val responseData = response.body?.string()
+                val jsonResponse = JSONObject(responseData)
+                val articlesJsonArray: JSONArray = jsonResponse.getJSONArray("data")
+
+                val itemMyList = ArrayList<Item>()
+                for (i in 0 until articlesJsonArray.length()) {
+                    val articleObject = articlesJsonArray.getJSONObject(i)
+                    val id = articleObject.getInt("id")
+                    val title = articleObject.getString("title")
+                    val content = articleObject.getString("content")
+                    val img = articleObject.getString("img")
+                    val createTime = articleObject.getString("createTime")
+                    val createUserName = articleObject.getString("createUserName")
+                    val createUserImg = articleObject.getString("createUserImg")
+                    itemMyList.add(Item(id, title, content, img,createTime, createUserName, createUserImg))
+                }
+
+                Pair(itemMyList, null)
+            } catch (e: IOException) {
+                Log.e("ApiCategoryService", "网络错误", e)
+                Pair(null, "网络错误，请检查网络连接")
+            }
+        }
+    }
+
+
+    // 点赞文章
+    suspend fun getLikeCount(context: Context, articleId: Int): Pair<Int?, String?> {
+        val token = JWTStorageHelper.getJwtToken(context)
+        if (token == null) {
+            Log.e("ApiLikeService", "JWT 令牌不存在")
+            return Pair(null, "用户未登录，无法获取点赞数")
+        }
+
+        val request = Request.Builder()
+            .url("http://112.124.27.151:8090/article/like?articleId=$articleId")
+            .addHeader("Authorization", token)
+            .get()
+            .build()
+
+        return withContext(Dispatchers.IO) {
+            try {
+                val response: Response = client.newCall(request).execute()
+
+                if (!response.isSuccessful) {
+                    Log.e("ApiLikeService", "请求失败，代码：${response.code}")
+                    return@withContext Pair(null, "请求失败，请稍后重试。")
+                }
+
+                val responseData = response.body?.string() ?: return@withContext Pair(null, "响应数据为空")
+                val jsonResponse = JSONObject(responseData)
+                val code = jsonResponse.getInt("code")
+
+                if (code == 0) {
+                    val likeCount = jsonResponse.getJSONObject("data").getInt("likeCount")
+                    Pair(likeCount, null)
+                } else {
+                    Pair(null, jsonResponse.getString("message"))
+                }
+
+            } catch (e: IOException) {
+                Log.e("ApiLikeService", "网络错误", e)
+                Pair(null, "网络错误，请检查网络连接")
+            }
+        }
+    }
 }

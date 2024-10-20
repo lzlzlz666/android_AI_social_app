@@ -60,6 +60,7 @@
 
     <!-- 登录按钮 -->
     <Button
+        style="@style/Widget.Material3.Button.ElevatedButton.Icon"
         android:id="@+id/loginButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -69,6 +70,7 @@
         android:textColor="@android:color/white"
         android:padding="12dp"
         android:textSize="16sp"/>
+
 
     <!-- 登录跳转文本 -->
     <TextView
