@@ -25,6 +25,7 @@ class ItemMyAdapter(private val itemMyList: List<Item>) : RecyclerView.Adapter<I
 
             // 设置喜欢图标颜色
             updateLikeIcon(item)
+            binding.likeCounts.text = item.likeCount.toString()
 
             // 点击事件
             binding.imageViewLike.setOnClickListener {

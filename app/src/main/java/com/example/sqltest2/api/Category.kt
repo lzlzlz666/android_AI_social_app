@@ -19,7 +19,10 @@ import java.io.IOException
 import com.example.sqltest2.api.ThemeApiService
 import com.example.sqltest2.models.ArticleItem
 import com.example.sqltest2.models.Item
+import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 
 
@@ -481,7 +484,6 @@ object ApiCategoryService {
         }
     }
 
-
     // 点赞文章
     suspend fun getLikeCount(context: Context, articleId: Int): Pair<Int?, String?> {
         val token = JWTStorageHelper.getJwtToken(context)
@@ -491,7 +493,7 @@ object ApiCategoryService {
         }
 
         val request = Request.Builder()
-            .url("http://112.124.27.151:8090/article/like?articleId=$articleId")
+            .url("${com.example.sqltest2.utils.Constants.BASE_URL}/article/like?articleId=$articleId")
             .addHeader("Authorization", token)
             .get()
             .build()
@@ -522,4 +524,47 @@ object ApiCategoryService {
             }
         }
     }
+
+    // 增加点赞+1
+    suspend fun addLike(context: Context, articleId: Int): Pair<Boolean, String?> {
+        val token = JWTStorageHelper.getJwtToken(context)
+        if (token == null) {
+            Log.e("ApiLikeService", "JWT 令牌不存在")
+            return Pair(false, "用户未登录，无法增加点赞")
+        }
+
+        val requestBody = RequestBody.create("application/json".toMediaTypeOrNull(), "{}") // 空 JSON 对象作为请求体
+
+        val request = Request.Builder()
+            .url("${com.example.sqltest2.utils.Constants.BASE_URL}/article/like?articleId=$articleId")
+            .addHeader("Authorization", token)
+            .put(requestBody) // 发起 PUT 请求
+            .build()
+
+        return withContext(Dispatchers.IO) {
+            try {
+                val response: Response = client.newCall(request).execute()
+
+                if (!response.isSuccessful) {
+                    Log.e("ApiLikeService", "请求失败，代码：${response.code}")
+                    return@withContext Pair(false, "请求失败，请稍后重试。")
+                }
+
+                val responseData = response.body?.string() ?: return@withContext Pair(false, "响应数据为空")
+                val jsonResponse = JSONObject(responseData)
+                val code = jsonResponse.getInt("code")
+
+                if (code == 0) {
+                    Pair(true, null) // 成功
+                } else {
+                    Pair(false, jsonResponse.getString("message"))
+                }
+
+            } catch (e: IOException) {
+                Log.e("ApiLikeService", "网络错误", e)
+                Pair(false, "网络错误，请检查网络连接")
+            }
+        }
+    }
+
 }

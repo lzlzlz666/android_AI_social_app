@@ -8,7 +8,11 @@ import com.example.sqltest2.R
 import com.example.sqltest2.models.Item
 import com.example.sqltest2.databinding.ItemLayoutBinding
 
-class ItemAdapter(private val itemList: List<Item>) : RecyclerView.Adapter<ItemAdapter.ViewHolder>() {
+interface OnItemLikedListener {
+    fun onItemLiked(itemId: Int)
+}
+
+class ItemAdapter(private val itemList: List<Item>,  private val listener: OnItemLikedListener) : RecyclerView.Adapter<ItemAdapter.ViewHolder>() {
 
     inner class ViewHolder(private val binding: ItemLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Item) {
@@ -30,12 +34,14 @@ class ItemAdapter(private val itemList: List<Item>) : RecyclerView.Adapter<ItemA
             binding.imageViewLike.setOnClickListener {
                 item.isLiked = !item.isLiked // 切换状态
                 updateLikeIcon(item) // 更新图标颜色
+                listener.onItemLiked(item.id)
             }
         }
 
         private fun updateLikeIcon(item: Item) {
             val colorResId = if (item.isLiked) R.color.red else R.color.black // 根据状态设置颜色
             binding.imageViewLike.setColorFilter(binding.imageViewLike.context.getColor(colorResId))
+
         }
     }
 

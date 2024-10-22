@@ -7,18 +7,22 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.sqltest2.adapters.CarouselAdapter
 import com.example.sqltest2.adapters.ItemAdapter
+import com.example.sqltest2.adapters.OnItemLikedListener
 import com.example.sqltest2.api.ApiCategoryService
 import com.example.sqltest2.databinding.FragmentHallBinding
 import com.example.sqltest2.models.Item
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class HallFragment : Fragment() {
+class HallFragment : Fragment(), OnItemLikedListener {
 
     private var _binding: FragmentHallBinding? = null
     private val binding get() = _binding!!
@@ -73,22 +77,39 @@ class HallFragment : Fragment() {
     }
 
     private fun fetchPublishedArticles() {
-        // 使用协程获取数据
         lifecycleScope.launch {
             val (itemList, errorMessage) = ApiCategoryService.getPublishedArticles(requireContext())
 
             if (itemList != null) {
-                // 创建适配器并设置给 RecyclerView
-                val itemAdapter = ItemAdapter(itemList)
+                val updatedItemList = itemList.map { item ->
+                    val (likeCount, _) = withContext(Dispatchers.IO) {
+                        ApiCategoryService.getLikeCount(requireContext(), item.id)
+                    }
+                    item.copy(likeCount = likeCount ?: 0)
+                }
+
+                val itemAdapter = ItemAdapter(updatedItemList, this@HallFragment)
                 binding.recyclerView.adapter = itemAdapter
                 binding.recyclerView.layoutManager = GridLayoutManager(context, 2)
             } else {
-                // 处理错误信息，例如弹出提示
                 errorMessage?.let { Log.e("HallFragment", it) }
             }
         }
     }
 
+    override fun onItemLiked(itemId: Int) {
+        lifecycleScope.launch {
+            val (success, errorMessage) = ApiCategoryService.addLike(requireContext(), itemId)
+            if (success) {
+                // 点赞成功的处理逻辑
+                Toast.makeText(requireContext(), "点赞成功！", Toast.LENGTH_SHORT).show()
+                fetchPublishedArticles()
+            } else {
+                // 处理错误信息
+                errorMessage?.let { Log.e("HallFragment", it) }
+            }
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
