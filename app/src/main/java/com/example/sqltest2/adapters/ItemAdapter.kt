@@ -8,6 +8,7 @@ import com.example.sqltest2.R
 import com.example.sqltest2.models.Item
 import com.example.sqltest2.databinding.ItemLayoutBinding
 
+// 回调
 interface OnItemLikedListener {
     fun onItemLiked(itemId: Int)
 }

@@ -42,6 +42,35 @@
         android:layout_marginBottom="16dp"/>
 
     <LinearLayout
+        android:id="@+id/imageUploadLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:layout_marginBottom="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="上传所需图片"
+            android:layout_gravity="center"
+            android:textSize="16sp" />
+
+        <!-- 使用 ShapeableImageView 实现圆角图片效果 -->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/uploadImageView"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_gravity="center"
+            android:src="@drawable/baseline_add_24"
+            android:contentDescription="点击上传图片"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.MaterialComponents.SmallComponent"
+            app:strokeWidth="5dp"
+            app:strokeColor="@color/black"
+            android:scaleType="centerCrop" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
