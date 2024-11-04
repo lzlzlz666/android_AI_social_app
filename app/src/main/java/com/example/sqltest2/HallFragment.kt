@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.sqltest2.adapters.CarouselAdapter
 import com.example.sqltest2.adapters.ItemAdapter
@@ -90,7 +91,8 @@ class HallFragment : Fragment(), OnItemLikedListener {
 
                 val itemAdapter = ItemAdapter(updatedItemList, this@HallFragment)
                 binding.recyclerView.adapter = itemAdapter
-                binding.recyclerView.layoutManager = GridLayoutManager(context, 2)
+                binding.recyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+
             } else {
                 errorMessage?.let { Log.e("HallFragment", it) }
             }

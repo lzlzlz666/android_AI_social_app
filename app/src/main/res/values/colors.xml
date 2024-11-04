@@ -46,4 +46,7 @@
 
     <color name="colorPrimary">#3F51B5</color>
     <color name="transparent">#00FFFFFF</color>
+
+    <!--  自定义  -->
+    <color name="redBookBox_frame">#F4F4F4</color>
 </resources>

@@ -1,12 +1,16 @@
 package com.example.sqltest2.adapters
 
+import android.content.Intent
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.sqltest2.DetailHallActivity
 import com.example.sqltest2.R
 import com.example.sqltest2.models.Item
 import com.example.sqltest2.databinding.ItemLayoutBinding
+import kotlin.random.Random
 
 // 回调
 interface OnItemLikedListener {
@@ -27,6 +31,12 @@ class ItemAdapter(private val itemList: List<Item>,  private val listener: OnIte
                 .load(item.createUserImg)
                 .into(binding.imageCreateUser)
 
+            // 随机高度设置
+            val randomHeight = Random.nextInt(230, 271) // 随机生成200到300之间的值
+            val layoutParams = binding.imageView.layoutParams
+            layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, randomHeight.toFloat(), binding.imageView.context.resources.displayMetrics).toInt()
+            binding.imageView.layoutParams = layoutParams
+
             // 设置喜欢图标颜色
             updateLikeIcon(item)
             binding.likeCounts.text = item.likeCount.toString()
@@ -37,10 +47,23 @@ class ItemAdapter(private val itemList: List<Item>,  private val listener: OnIte
                 updateLikeIcon(item) // 更新图标颜色
                 listener.onItemLiked(item.id)
             }
+
+            binding.root.setOnClickListener {
+                val context = binding.root.context
+                val intent = Intent(context, DetailHallActivity::class.java).apply {
+                    putExtra("title", item.title)
+                    putExtra("content", item.content)
+                    putExtra("img", item.img)
+                    putExtra("createUserImg",item.createUserImg)
+                    putExtra("createUserName",item.createUserName)
+                    putExtra("createTime",item.createTime)
+                }
+                context.startActivity(intent)
+            }
         }
 
         private fun updateLikeIcon(item: Item) {
-            val colorResId = if (item.isLiked) R.color.red else R.color.black // 根据状态设置颜色
+            val colorResId = if (item.isLiked) R.color.red else R.color.gray // 根据状态设置颜色
             binding.imageViewLike.setColorFilter(binding.imageViewLike.context.getColor(colorResId))
 
         }
