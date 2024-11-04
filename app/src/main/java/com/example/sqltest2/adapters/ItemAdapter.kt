@@ -32,7 +32,8 @@ class ItemAdapter(private val itemList: List<Item>,  private val listener: OnIte
                 .into(binding.imageCreateUser)
 
             // 随机高度设置
-            val randomHeight = Random.nextInt(230, 271) // 随机生成200到300之间的值
+//            val randomHeight = Random.nextInt(230, 271) // 随机生成200到300之间的值
+            val randomHeight = 250
             val layoutParams = binding.imageView.layoutParams
             layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, randomHeight.toFloat(), binding.imageView.context.resources.displayMetrics).toInt()
             binding.imageView.layoutParams = layoutParams

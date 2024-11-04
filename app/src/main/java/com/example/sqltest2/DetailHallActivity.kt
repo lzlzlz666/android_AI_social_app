@@ -33,7 +33,7 @@ class DetailHallActivity : AppCompatActivity() {
         // 显示数据
 //        binding.textViewTitle.text = title
 //        binding.textViewContent.text = content
-//        binding.username.text = createUserName
+        binding.username.text = createUserName
 //        binding.dataTime.text = createTime?.let { formatDateTime(it) } ?: "未知时间" // 处理null值
 //        Glide.with(this).load(img).into(binding.imageView)
         Glide.with(this).load(createUserImg).into(binding.imageUserView)
