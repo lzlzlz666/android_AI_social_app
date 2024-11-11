@@ -52,6 +52,7 @@ class ItemAdapter(private val itemList: List<Item>,  private val listener: OnIte
             binding.root.setOnClickListener {
                 val context = binding.root.context
                 val intent = Intent(context, DetailHallActivity::class.java).apply {
+                    putExtra("id",item.id)
                     putExtra("title", item.title)
                     putExtra("content", item.content)
                     putExtra("img", item.img)

@@ -44,9 +44,16 @@
     <color name="light_green">#FF8BC34A</color>
     <color name="blue_gray">#FF607D8B</color>
 
-    <color name="colorPrimary">#3F51B5</color>
     <color name="transparent">#00FFFFFF</color>
 
     <!--  自定义  -->
     <color name="redBookBox_frame">#F4F4F4</color>
+
+        <color name="colorPrimary">#6200EE</color>
+        <color name="colorPrimaryDark">#3700B3</color>
+        <color name="colorAccent">#03DAC5</color>
+        <color name="colorGray">#B0B0B0</color>
+        <color name="colorWhite">#FFFFFF</color>
+        <color name="colorDarkGray">#424242</color>
+
 </resources>
