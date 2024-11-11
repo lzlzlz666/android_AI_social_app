@@ -426,7 +426,8 @@ object ApiCategoryService {
                     val createTime = articleObject.getString("createTime")
                     val createUserName = articleObject.getString("createUserName")
                     val createUserImg = articleObject.getString("createUserImg")
-                    itemList.add(Item(id, title, content, img,createTime, createUserName, createUserImg))
+                    val userId = articleObject.getInt("userId")
+                    itemList.add(Item(id, title, content, img,createTime, createUserName, createUserImg, userId))
                 }
 
                 Pair(itemList, null)
@@ -473,7 +474,8 @@ object ApiCategoryService {
                     val createTime = articleObject.getString("createTime")
                     val createUserName = articleObject.getString("createUserName")
                     val createUserImg = articleObject.getString("createUserImg")
-                    itemMyList.add(Item(id, title, content, img,createTime, createUserName, createUserImg))
+                    val userId = articleObject.getInt("userId")
+                    itemMyList.add(Item(id, title, content, img,createTime, createUserName, createUserImg, userId))
                 }
 
                 Pair(itemMyList, null)

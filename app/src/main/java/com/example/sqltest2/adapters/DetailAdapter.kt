@@ -36,7 +36,7 @@ class DetailAdapter(private val details: List<DetailItem>) : RecyclerView.Adapte
         }
 
         // 更新评论列表
-        holder.commentAdapter.setComments(detail.comment,detail.articleId)
+        holder.commentAdapter.setComments(detail.comment,detail.articleId,detail.userId)
         holder.binding.recyclerViewComments.layoutManager = LinearLayoutManager(holder.itemView.context)
         holder.binding.recyclerViewComments.adapter = holder.commentAdapter
     }

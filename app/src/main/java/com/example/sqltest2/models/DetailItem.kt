@@ -9,5 +9,6 @@ data class DetailItem(
     val img: String,
     val createUserImg: String,
     val createTime: String,
+    val userId: Int,
     val comment: List<Comment>
 )

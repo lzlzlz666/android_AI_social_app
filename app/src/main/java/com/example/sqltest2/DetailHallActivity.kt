@@ -33,6 +33,7 @@ class DetailHallActivity : AppCompatActivity() {
         val createUserName = intent.getStringExtra("createUserName")
         val createTime = intent.getStringExtra("createTime")
         val articleId = intent.getIntExtra("id", -1)
+        val userId = intent.getIntExtra("userId",-1)
 
         // 获取评论数据
         val commentService = CommentService(this)
@@ -50,12 +51,18 @@ class DetailHallActivity : AppCompatActivity() {
                     img = img ?: "",
                     createUserImg = createUserImg ?: "",
                     createTime = formatDateTime(createTime ?: "未知时间"),
-                    comment = comments ?: emptyList()
+                    comment = comments ?: emptyList(),
+                    userId = userId
                 )
             )
             val adapter = DetailAdapter(details)
             binding.recyclerView.layoutManager = LinearLayoutManager(this)
             binding.recyclerView.adapter = adapter
+        }
+
+        // 在 DetailHallActivity 中的 goBack 按钮点击事件中
+        binding.goBack.setOnClickListener {
+            finish() // 结束当前 Activity，返回到 HallFragment
         }
 
         // 发送按钮分享事件
@@ -87,7 +94,8 @@ class DetailHallActivity : AppCompatActivity() {
                                     img = img ?: "",
                                     createUserImg = createUserImg ?: "",
                                     createTime = formatDateTime(createTime ?: "未知时间"),
-                                    comment = updatedComments ?: emptyList()
+                                    comment = updatedComments ?: emptyList(),
+                                    userId = userId
                                 )
                             )
                             val adapter = DetailAdapter(details)

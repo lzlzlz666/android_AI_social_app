@@ -59,6 +59,7 @@ class ItemAdapter(private val itemList: List<Item>,  private val listener: OnIte
                     putExtra("createUserImg",item.createUserImg)
                     putExtra("createUserName",item.createUserName)
                     putExtra("createTime",item.createTime)
+                    putExtra("userId",item.userId)
                 }
                 context.startActivity(intent)
             }

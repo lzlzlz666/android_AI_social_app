@@ -41,10 +41,20 @@
                     android:id="@+id/textViewUsername"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:text="用户名"
                     android:textColor="#01579B"
                     android:textStyle="bold"
                     android:layout_gravity="start" />
+
+                <ImageView
+                    android:id="@+id/writer"
+                    android:src="@drawable/writer"
+                    android:paddingBottom="8dp"
+                    android:layout_width="40dp"
+                    android:layout_height="28dp"
+                    android:layout_gravity="center"
+                    android:visibility="visible" />
 
                 <!-- 回复按钮 -->
                 <TextView
@@ -54,7 +64,6 @@
                     android:text="回复"
                     android:textColor="#01579B"
                     android:textSize="14sp"
-                    android:layout_gravity="center_vertical"
                     android:layout_marginStart="10dp"
                     android:clickable="true"
                     android:focusable="true"
@@ -70,8 +79,7 @@
                 android:layout_height="wrap_content"
                 android:text="评论内容"
                 android:textColor="#000000"
-                android:textSize="14sp"
-                android:layout_marginTop="5dp" />
+                android:textSize="14sp" />
 
             <!-- 评论时间 -->
             <TextView

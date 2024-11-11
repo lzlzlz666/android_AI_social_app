@@ -24,12 +24,14 @@ class CommentAdapter : RecyclerView.Adapter<CommentAdapter.CommentViewHolder>() 
 
     private var comments: List<Comment> = emptyList()
     private var articleId: Int = -1                      // 该评论对应的文章编号
+    private var userId: Int = -1
 
     class CommentViewHolder(val binding: ItemCommentBinding) : RecyclerView.ViewHolder(binding.root)
 
-    fun setComments(comments: List<Comment>, articleId: Int) {
+    fun setComments(comments: List<Comment>, articleId: Int,userId: Int) {
         this.comments = comments
         this.articleId = articleId
+        this.userId = userId
         notifyDataSetChanged()
     }
 
@@ -64,10 +66,17 @@ class CommentAdapter : RecyclerView.Adapter<CommentAdapter.CommentViewHolder>() 
             holder.binding.imageViewUser.layoutParams.height = holder.itemView.context.resources.getDimensionPixelSize(R.dimen.avatar_size_small)
         }
 
+        // 判断是否显示 writer 图片
+        if (comment.userId == userId) {
+            holder.binding.writer.visibility = View.VISIBLE  // 显示 writer 图片
+        } else {
+            holder.binding.writer.visibility = View.GONE  // 隐藏 writer 图片
+        }
+
         // 处理子评论
         if (comment.replies.isNotEmpty()) {
             val replyAdapter = CommentAdapter() // 为子评论创建新的适配器
-            replyAdapter.setComments(comment.replies, articleId)
+            replyAdapter.setComments(comment.replies, articleId, userId)
             holder.binding.recyclerViewReplies.layoutManager = LinearLayoutManager(holder.itemView.context)
             holder.binding.recyclerViewReplies.adapter = replyAdapter
         }

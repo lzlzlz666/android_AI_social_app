@@ -9,6 +9,7 @@ data class Item(
     val createTime: String,
     val createUserName: String,
     val createUserImg: String,
+    val userId: Int,
     var isLiked: Boolean = false,
     var likeCount: Int = 0 // 添加点赞数字段
 )
