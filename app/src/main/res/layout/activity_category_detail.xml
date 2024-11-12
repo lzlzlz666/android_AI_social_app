@@ -72,7 +72,7 @@
         android:layout_width="match_parent"
         android:layout_height="600dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/no_article"
+        android:src="@drawable/no_article2"
         android:visibility="gone"/>
 
     <!-- 文章列表 -->
