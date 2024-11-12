@@ -17,10 +17,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.sqltest2.adapters.CategoryAdapter
 import com.example.sqltest2.api.ApiCategoryService
 import com.example.sqltest2.models.CategoryItem
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import androidx.lifecycle.lifecycleScope
 
 class HomeFragment : Fragment() {
 
@@ -104,7 +104,7 @@ class HomeFragment : Fragment() {
 
     private fun loadCategories() {
         // 使用协程异步发起API请求
-        CoroutineScope(Dispatchers.IO).launch {
+        lifecycleScope.launch(Dispatchers.IO) {
             val (categoryItems, errorMessage) = ApiCategoryService.getCategories(requireContext())
 
             withContext(Dispatchers.Main) {
@@ -154,7 +154,7 @@ class HomeFragment : Fragment() {
 
     // 删除分类的方法，调用后端 DELETE API
     private fun deleteCategory(id: Int) {
-        CoroutineScope(Dispatchers.IO).launch {
+        lifecycleScope.launch(Dispatchers.IO) {
             val (success, errorMessage) = ApiCategoryService.deleteCategory(requireContext(), id)
 
             withContext(Dispatchers.Main) {
@@ -181,7 +181,7 @@ class HomeFragment : Fragment() {
 
     // 搜索分类
     private fun searchCategories(query: String) {
-        CoroutineScope(Dispatchers.IO).launch {
+        lifecycleScope.launch(Dispatchers.IO) {
             val (categoryItems, errorMessage) = ApiCategoryService.searchCategories(requireContext(), query)
 
             withContext(Dispatchers.Main) {
@@ -195,5 +195,4 @@ class HomeFragment : Fragment() {
             }
         }
     }
-
 }

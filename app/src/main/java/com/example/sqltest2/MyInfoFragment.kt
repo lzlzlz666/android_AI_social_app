@@ -26,13 +26,10 @@ import com.example.sqltest2.api.ApiUploadService
 import com.example.sqltest2.api.ApiUserService
 import com.example.sqltest2.models.MyMessages
 import com.example.sqltest2.utils.JWTStorageHelper
-
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.OkHttpClient
+import androidx.lifecycle.lifecycleScope
 import java.io.File
 
 class MyInfoFragment : Fragment() {
@@ -73,9 +70,8 @@ class MyInfoFragment : Fragment() {
         return view
     }
 
-
     private fun loadUserProfileImage() {
-        GlobalScope.launch(Dispatchers.IO) {
+        lifecycleScope.launch(Dispatchers.IO) {
             val (user, errorMessage) = ApiUserService.getUserInfo(requireContext())
 
             withContext(Dispatchers.Main) {
@@ -96,7 +92,7 @@ class MyInfoFragment : Fragment() {
     }
 
     private fun loadMyMessages() {
-        GlobalScope.launch(Dispatchers.IO) {
+        lifecycleScope.launch(Dispatchers.IO) {
             val (messages, errorMessage) = ApiMyListService.getMessages(requireContext())
 
             withContext(Dispatchers.Main) {
@@ -107,7 +103,6 @@ class MyInfoFragment : Fragment() {
                         myMessagesList.add(MyMessages(message.myId, message.centent))
                     }
                     myMessagesAdapter.notifyDataSetChanged()
-//                    Toast.makeText(context, "信息加载成功！", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(requireContext(), errorMessage ?: "加载消息失败", Toast.LENGTH_SHORT).show()
                 }
@@ -155,7 +150,7 @@ class MyInfoFragment : Fragment() {
     private fun uploadImage(file: File) {
         try {
             ApiUploadService.uploadImage(file, requireContext()) { url ->
-                GlobalScope.launch(Dispatchers.Main) {
+                lifecycleScope.launch(Dispatchers.Main) {
                     if (url != null) {
                         Toast.makeText(requireContext(), "上传成功: $url", Toast.LENGTH_LONG).show()
                         Glide.with(this@MyInfoFragment)
@@ -182,7 +177,7 @@ class MyInfoFragment : Fragment() {
     // 更新图片
     fun updateUserImage(context: Context, avatarUrl: String) {
         // 使用协程在后台线程中执行网络请求
-        CoroutineScope(Dispatchers.IO).launch {
+        lifecycleScope.launch(Dispatchers.IO) {
             val response = ApiUploadService.updateUserImage(context, avatarUrl)
 
             // 在主线程中更新UI
@@ -195,6 +190,4 @@ class MyInfoFragment : Fragment() {
             }
         }
     }
-
-
 }

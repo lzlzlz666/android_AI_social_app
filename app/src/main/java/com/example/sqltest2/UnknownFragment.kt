@@ -39,8 +39,6 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 class UnknownFragment : Fragment() {
-    private lateinit var client: OkHttpClient
-
     private lateinit var recyclerView: RecyclerView
     private lateinit var inputText: EditText
     private lateinit var sendButton: Button
@@ -60,9 +58,15 @@ class UnknownFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // 确保在这里返回视图
+        val view = inflater.inflate(R.layout.activity_unknown_fragment, container, false)
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         if (!isInitialized) {
             isInitialized = true
-            val view = inflater.inflate(R.layout.activity_unknown_fragment, container, false)
 
             gptImageView = view.findViewById(R.id.gptImage)
             drawerLayout = view.findViewById(R.id.drawer_layout)
@@ -95,12 +99,9 @@ class UnknownFragment : Fragment() {
             fetchConversationGroups()
             checkChatMessages()
             fetchUserInfo()
-
-            return view
-        } else {
-            return super.onCreateView(inflater, container, savedInstanceState)
         }
     }
+
 
     private fun initSDK() {
         val config = SparkChainConfig.builder()
