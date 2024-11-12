@@ -1,40 +1,139 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:material="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:padding="10dp"
     android:background="#F5F5F5">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="请添加您的笔记"
-        android:textSize="24sp"
-        android:gravity="center"
-        android:layout_marginTop="0dp"
-        android:layout_marginBottom="20dp" />
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/x"
+            android:src="@drawable/x"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:visibility="visible" />
+
+        <!-- 用户名 -->
+        <TextView
+            android:id="@+id/textViewUsername"
+            android:layout_width="0dp"
+            android:layout_weight="8"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="创作"
+            android:textStyle="bold"
+            android:textSize="20sp"/>
+
+        <ImageView
+            android:id="@+id/question"
+            android:src="@drawable/question"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="22dp"
+            android:layout_gravity="center"
+            android:visibility="visible" />
+
+    </LinearLayout>
+
 
     <EditText
         android:id="@+id/titleEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/rounded_edittext"
-        android:hint="输入标题"
-        android:padding="18dp"
+        android:hint="输入标题会更受欢迎⭐"
         android:textColor="#333333"
         android:textSize="16sp" />
+
+    <!-- 可滑动的标签栏 -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/tagsLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- 标签示例 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/rounded_tag_background"
+                android:text="#学习日常💗"
+                android:onClick="onTagClick"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/rounded_tag_background"
+                android:text="#论文写作💩"
+                android:onClick="onTagClick"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/rounded_tag_background"
+                android:text="#运动日常😇"
+                android:onClick="onTagClick"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/rounded_tag_background"
+                android:text="#实况足球🤡"
+                android:onClick="onTagClick"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/rounded_tag_background"
+                android:text="#破防瞬间🤖"
+                android:onClick="onTagClick"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/rounded_tag_background"
+                android:text="#王者超神时刻😕"
+                android:onClick="onTagClick"/>
+
+            <!-- 更多标签... -->
+        </LinearLayout>
+    </HorizontalScrollView>
 
     <EditText
         android:id="@+id/contentEditText"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:hint="请输入内容"
+        android:hint="畅所欲言💬，分享此刻的心情与想法😘，记录每一个瞬间!!"
         android:background="@drawable/rounded_edittext"
-        android:padding="16dp"
+        android:padding="12dp"
+        android:layout_marginTop="6dp"
         android:gravity="top"
         android:textSize="16sp"
         android:textColor="#333333"
@@ -47,22 +146,15 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:visibility="gone"
-        android:layout_marginBottom="16dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="上传所需图片"
-            android:layout_gravity="center"
-            android:textSize="16sp" />
+        android:layout_marginBottom="10dp">
 
         <!-- 使用 ShapeableImageView 实现圆角图片效果 -->
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/uploadImageView"
-            android:layout_width="130dp"
-            android:layout_height="130dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:layout_gravity="center"
-            android:src="@drawable/baseline_add_24"
+            android:src="@drawable/upload"
             android:contentDescription="点击上传图片"
             app:shapeAppearanceOverlay="@style/ShapeAppearance.MaterialComponents.SmallComponent"
             app:strokeWidth="5dp"
@@ -74,8 +166,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginBottom="16dp">
+        android:gravity="center">
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/stateSwitch"
@@ -102,8 +193,8 @@
         android:backgroundTint="#6200EE"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
-        android:layout_marginTop="16dp"
         android:padding="12dp"
         android:elevation="4dp"/>
+
 
 </LinearLayout>

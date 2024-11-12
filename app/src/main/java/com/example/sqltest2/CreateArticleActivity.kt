@@ -67,6 +67,7 @@ class CreateArticleActivity : AppCompatActivity() {
             imageUploadLayout.visibility = if (stateSwitch.isChecked) View.GONE else View.VISIBLE
         }
 
+
         val categoryId = intent.getIntExtra("categoryId", -1)
 
         saveButton.setOnClickListener {
@@ -229,6 +230,13 @@ class CreateArticleActivity : AppCompatActivity() {
                 Toast.makeText(this, "权限被拒绝，无法访问外部存储", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    fun onTagClick(view: View) {
+        val tagText = (view as TextView).text.toString()
+        val currentText = contentEditText.text.toString()
+        contentEditText.setText("$currentText $tagText ")
+        contentEditText.setSelection(contentEditText.text.length)
     }
 }
 

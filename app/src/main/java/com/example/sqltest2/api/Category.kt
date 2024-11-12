@@ -474,7 +474,7 @@ object ApiCategoryService {
                     val createTime = articleObject.getString("createTime")
                     val createUserName = articleObject.getString("createUserName")
                     val createUserImg = articleObject.getString("createUserImg")
-                    val userId = articleObject.getInt("userId")
+                    val userId = articleObject.optInt("userId", -1) // 实际上是-1
                     itemMyList.add(Item(id, title, content, img,createTime, createUserName, createUserImg, userId))
                 }
 
