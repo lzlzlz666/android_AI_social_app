@@ -14,25 +14,29 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="@color/white">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:text="ChatGpt 3.5"
-                android:textSize="25sp"
-                android:gravity="center"/>
+            android:layout_height="50dp"
+            android:background="@color/white"
+            android:padding="8dp"
+            android:elevation="1dp"> <!-- 添加阴影效果 -->
 
             <ImageView
                 android:id="@+id/moreOptions"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/baseline_format_list_bulleted_24"
+                android:src="@drawable/chat_setting"
                 android:contentDescription="@string/setting"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="16dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="轻享 AI"
+                android:textSize="22sp"
+                android:layout_marginLeft="16dp"
+                android:gravity="center_vertical"
+                android:textColor="@color/black"/> <!-- 设置文本颜色 -->
         </RelativeLayout>
 
         <RelativeLayout
@@ -44,8 +48,8 @@
             <!-- GPT 图片，初始状态为 GONE，居中显示 -->
             <ImageView
                 android:id="@+id/gptImage"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:src="@drawable/gpt2"
                 android:layout_centerInParent="true"
                 android:visibility="gone"/>  <!-- 初始状态为 gone -->
@@ -54,32 +58,37 @@
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="8dp"/>
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"/>
 
         </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="80dp"
             android:orientation="horizontal"
             android:gravity="center_vertical"
             android:padding="8dp">
 
             <EditText
                 android:id="@+id/inputText"
-                android:layout_width="260dp"
-                android:layout_height="wrap_content"
-                android:hint="请输入问题..."
-                android:padding="8dp"
-                android:background="@drawable/chat_edittext_background"/>
+                android:layout_width="0dp"
+                android:layout_weight="7.6"
+                android:layout_height="50dp"
+                android:background="@drawable/chat_edittext_background"
+                android:hint=" 消息..."
+                android:padding="8dp" />
 
-            <Button
+            <ImageView
                 android:id="@+id/sendButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:backgroundTint="@color/blue_gray"
-                android:text="发送" />
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="42dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/chat_send"
+                android:background="@drawable/circular_image"
+                android:clipToOutline="true"
+                android:layout_marginStart="20dp" />
         </LinearLayout>
     </LinearLayout>
 

@@ -4,20 +4,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/registerbg"
     android:padding="16dp">
 
-    <!-- 欢迎文本 -->
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="35dp"
+        android:layout_marginBottom="35dp"
+        android:src="@drawable/gpt"
+        android:layout_gravity="center"/>
+
     <TextView
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="30dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="欢迎注册"
-        android:textSize="30sp"
         android:textStyle="bold"
-        android:textColor="#26C6DA"
-        android:layout_gravity="center"
-        android:layout_marginTop="50dp"
-        android:layout_marginBottom="30dp"/>
+        android:textColor="#000"
+        android:text="欢迎注册"
+        android:textSize="37sp"
+        android:layout_gravity="center"/>
 
     <!-- 用户名输入框 -->
     <com.google.android.material.textfield.TextInputLayout
@@ -25,9 +31,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="用户名"
-        android:textColorHint="#ffffff"
-        app:boxStrokeColor="@android:color/white"
-        app:hintTextColor="@color/white"
+        android:textColorHint="#808080"
+        app:boxStrokeColor="@color/teal"
+        app:hintTextColor="@color/teal"
         app:counterEnabled="true"
         app:counterMaxLength="16"
         app:errorEnabled="true"
@@ -39,7 +45,7 @@
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:maxLength="16"
-            android:textColor="#ffffff"
+            android:textColor="@color/black"
             android:padding="10dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -49,9 +55,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="密码"
-        android:textColorHint="#ffffff"
-        app:boxStrokeColor="@android:color/white"
-        app:hintTextColor="@color/white"
+        android:textColorHint="#808080"
+        app:boxStrokeColor="@color/teal"
+        app:hintTextColor="@color/teal"
         app:endIconMode="password_toggle"
         android:layout_marginTop="16dp">
 
@@ -60,30 +66,48 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
-            android:textColor="#ffffff"
+            android:textColor="@color/black"
             android:padding="10dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- 注册按钮 -->
+    <!-- 登录按钮 -->
     <Button
+        style="@style/Widget.Material3.Button.ElevatedButton.Icon"
         android:id="@+id/registerButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/teal"
+        android:layout_width="360dp"
+        android:layout_height="60dp"
         android:text="注册"
-        android:textSize="16sp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/teal"
         android:textColor="@android:color/white"
-        android:layout_marginTop="24dp"/>
+        android:padding="12dp"
+        android:textSize="16sp"
+        android:layout_gravity="center"/>
 
     <!-- 登录跳转文本 -->
-    <TextView
-        android:id="@+id/loginText"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="我有账号了，点击登录"
-        android:textColor="#C5E1A5"
-        android:layout_gravity="center"
-        android:layout_marginTop="24dp"
-        android:clickable="true"/>
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:text="已注册过账户？"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/loginText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:clickable="true"
+            android:text="登录"
+            android:textColor="@color/teal" />
+    </LinearLayout>
+
 
 </LinearLayout>

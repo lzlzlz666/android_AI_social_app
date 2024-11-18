@@ -25,6 +25,7 @@ import com.example.sqltest2.api.ApiUserService.getUserInfo
 import com.example.sqltest2.api.ChatService
 import com.example.sqltest2.models.ChatMessage
 import com.example.sqltest2.utils.JWTStorageHelper
+import com.example.sqltest2.utils.SparkManager
 import com.google.android.material.navigation.NavigationView
 import com.iflytek.sparkchain.core.LLM
 import com.iflytek.sparkchain.core.LLMFactory
@@ -41,8 +42,7 @@ import org.json.JSONObject
 class UnknownFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var inputText: EditText
-    private lateinit var sendButton: Button
-    private lateinit var chatLLM: LLM
+    private lateinit var sendButton: ImageView
     private val chatMessages = mutableListOf<ChatMessage>()
     private lateinit var chatAdapter: ChatAdapter
     private lateinit var drawerLayout: DrawerLayout
@@ -53,6 +53,7 @@ class UnknownFragment : Fragment() {
     private val savedMessages = mutableListOf<ChatMessage>()
     private var currentConversationId: Int? = null
     private var isInitialized = false // 控制初始化状态
+    private val sparkManager = SparkManager.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -102,41 +103,35 @@ class UnknownFragment : Fragment() {
         }
     }
 
-
     private fun initSDK() {
-        val config = SparkChainConfig.builder()
-            .appID("87911696")
-            .apiKey("60cae27277c84f7b0068e553df3ff601")
-            .apiSecret("ZTgyMDRiYmJjYTZiZTg4MmEyZDczOWQw")
-
-        val result = SparkChain.getInst().init(requireContext(), config)
-        if (result != 0) {
-            addMessage("SDK 初始化失败，错误码: $result", false)
-            return
+        lifecycleScope.launch(Dispatchers.IO) {
+            val result = sparkManager.initSDK(requireContext())
+            if (result != 0) {
+                withContext(Dispatchers.Main) {
+                    addMessage("SDK 初始化失败，错误码: $result", false)
+                }
+            }
         }
-
-        val memory = Memory.windowMemory(5)
-        chatLLM = LLMFactory.textGeneration(memory)
     }
+
 
     // 获取用户信息并更新UI
     private fun fetchUserInfo() {
         lifecycleScope.launch(Dispatchers.IO) {
             val (user, errorMessage) = getUserInfo(requireContext())
             withContext(Dispatchers.Main) {
-                if (user != null) {
-                    // 更新用户头像和用户名
-                    usernameTextView.text = user.username
-
-                    // 设置头像，假设图片的 URL 或 drawable 已经在 user.avatar 中
-                    val avatarUrl = user.userPic  // 假设获取到的是URL
-                    loadUserAvatar(avatarUrl)
-                } else {
-                    Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+                if (isAdded && context != null) {
+                    if (user != null) {
+                        usernameTextView.text = user.username
+                        loadUserAvatar(user.userPic)
+                    } else {
+                        Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
     }
+
 
     private fun loadUserAvatar(avatarUrl: String) {
         Glide.with(this)
@@ -148,10 +143,9 @@ class UnknownFragment : Fragment() {
     private fun sendMessage(question: String) {
         lifecycleScope.launch {
             try {
-                val syncOutput = withContext(Dispatchers.IO) {
-                    chatLLM.run(question)
+                val aiResponse = withContext(Dispatchers.IO) {
+                    sparkManager.sendMessage(question)
                 }
-                val aiResponse = syncOutput.getContent()
                 addMessage(aiResponse, false)
 
                 if (currentConversationId != null) {
@@ -175,9 +169,9 @@ class UnknownFragment : Fragment() {
         checkChatMessages()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        SparkChain.getInst().unInit()
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Glide.with(this).clear(userInfoImageView)
     }
 
     private fun showAiMenu(view: View) {
@@ -222,7 +216,6 @@ class UnknownFragment : Fragment() {
         }
         aiMenu.show() // 显示菜单
     }
-
 
     private fun showSaveDialog(context: Context) {
         val builder = AlertDialog.Builder(context)
@@ -292,56 +285,65 @@ class UnknownFragment : Fragment() {
 
         chatService.fetchConversationGroups { success, dataArray ->
             if (success && dataArray != null) {
-                requireActivity().runOnUiThread {
-                    updateMenu(dataArray)
+                if (isAdded && context != null) {
+                    requireActivity().runOnUiThread {
+                        updateMenu(dataArray)
+                    }
                 }
             } else {
-                requireActivity().runOnUiThread {
-                    Toast.makeText(requireContext(), "获取对话组失败", Toast.LENGTH_SHORT).show()
+                if (isAdded && context != null) {
+                    requireActivity().runOnUiThread {
+                        Toast.makeText(requireContext(), "获取对话组失败", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
     }
+
 
     private fun updateMenu(dataArray: JSONArray) {
-        val historyContainer = view?.findViewById<LinearLayout>(R.id.historyContainer)
-        historyContainer?.removeAllViews()
+        // 确保 Fragment 仍然附加到 Activity
+        if (isAdded && context != null) {
+            val historyContainer = view?.findViewById<LinearLayout>(R.id.historyContainer)
+            historyContainer?.removeAllViews()
 
-        for (i in 0 until dataArray.length()) {
-            val itemObject = dataArray.getJSONObject(i)
-            val conversationName = itemObject.getString("conversationName")
-            val conversationId = itemObject.getInt("conversationId")
+            for (i in 0 until dataArray.length()) {
+                val itemObject = dataArray.getJSONObject(i)
+                val conversationName = itemObject.getString("conversationName")
+                val conversationId = itemObject.getInt("conversationId")
 
-            val menuItem = TextView(requireContext()).apply {
-                text = conversationName
-                textSize = 16f
-                setPadding(50, 16, 16, 16) // 可选: 设置内容的 padding
+                val menuItem = TextView(requireContext()).apply {
+                    text = conversationName
+                    textSize = 16f
+                    setPadding(50, 16, 16, 16) // 可选: 设置内容的 padding
 
-                setOnClickListener {
-                    currentConversationId = conversationId
-                    fetchMessagesByConversationId(conversationId)
-                    Toast.makeText(requireContext(), "点击了对话: $conversationName", Toast.LENGTH_SHORT).show()
+                    setOnClickListener {
+                        currentConversationId = conversationId
+                        fetchMessagesByConversationId(conversationId)
+                        Toast.makeText(requireContext(), "点击了对话: $conversationName", Toast.LENGTH_SHORT).show()
+                    }
+
+                    setOnLongClickListener {
+                        showOptionsMenu(it, conversationName, conversationId)
+                        true
+                    }
                 }
 
-                setOnLongClickListener {
-                    showOptionsMenu(it, conversationName, conversationId)
-                    true
+                // 设置 TextView 的外边距（margin）
+                val layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, // 宽度为 match_parent
+                    LinearLayout.LayoutParams.WRAP_CONTENT  // 高度为 wrap_content
+                ).apply {
+                    setMargins(0, 20, 0, 20) // 设置 margin 值，top 和 bottom 为 20px
                 }
+
+                menuItem.layoutParams = layoutParams
+
+                historyContainer?.addView(menuItem)
             }
-
-            // 设置 TextView 的外边距（margin）
-            val layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, // 宽度为 match_parent
-                LinearLayout.LayoutParams.WRAP_CONTENT  // 高度为 wrap_content
-            ).apply {
-                setMargins(0, 20, 0, 20) // 设置 margin 值，top 和 bottom 为 20px
-            }
-
-            menuItem.layoutParams = layoutParams
-
-            historyContainer?.addView(menuItem)
         }
     }
+
 
     private fun showOptionsMenu(view: View, conversationName: String, conversationId: Int) {
         val popupMenu = PopupMenu(requireContext(), view)
@@ -398,7 +400,6 @@ class UnknownFragment : Fragment() {
             }
         }
     }
-
 
     private fun deleteConversation(conversationId: Int) {
         lifecycleScope.launch {
