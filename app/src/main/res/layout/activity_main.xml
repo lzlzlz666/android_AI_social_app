@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:fillViewport="true"> <!-- 允许填充视口 -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
 
     <ImageView
         android:layout_width="50dp"
@@ -70,7 +75,7 @@
             android:padding="10dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- 登录按钮 -->
+    <!-- 注册按钮 -->
     <Button
         style="@style/Widget.Material3.Button.ElevatedButton.Icon"
         android:id="@+id/registerButton"
@@ -109,5 +114,5 @@
             android:textColor="@color/teal" />
     </LinearLayout>
 
-
 </LinearLayout>
+    </ScrollView>

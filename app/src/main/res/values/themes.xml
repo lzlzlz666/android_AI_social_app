@@ -3,6 +3,7 @@
     <style name="Base.Theme.SqlTest2" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/white</item>  <!-- 顶栏的主色 -->
     </style>
 
     <style name="Theme.SqlTest2" parent="Base.Theme.SqlTest2" />

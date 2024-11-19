@@ -17,7 +17,7 @@
             android:layout_height="50dp"
             android:background="@color/white"
             android:padding="8dp"
-            android:elevation="1dp"> <!-- 添加阴影效果 -->
+            android:elevation="1dp">
 
             <ImageView
                 android:id="@+id/moreOptions"
@@ -52,7 +52,7 @@
                 android:layout_height="50dp"
                 android:src="@drawable/gpt2"
                 android:layout_centerInParent="true"
-                android:visibility="gone"/>  <!-- 初始状态为 gone -->
+                android:visibility="visible"/>  <!-- 初始状态为 visible -->
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
@@ -62,6 +62,57 @@
                 android:paddingRight="8dp"/>
 
         </RelativeLayout>
+
+        <!-- 新增的消息框 -->
+        <LinearLayout
+            android:id="@+id/messageContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="visible"
+            android:padding="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="8dp">
+
+                <!-- 第一个框框 -->
+                <TextView
+                    android:id="@+id/message1"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="40dp"
+                    android:background="@drawable/rounded_chat"
+                    android:layout_marginRight="10dp"
+                    android:text="你好鸭🦆！很高兴见到你"
+                    android:padding="8dp" />
+
+                <!-- 第二个框框 -->
+                <TextView
+                    android:id="@+id/message2"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="40dp"
+                    android:background="@drawable/rounded_chat"
+                    android:text="🏫 浙农林在哪? 🏫"
+                    android:padding="8dp" />
+            </LinearLayout>
+
+        <TextView
+            android:id="@+id/message3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_chat"
+            android:padding="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:text="中国男足❤️🧡💛是否晋级2026年美加墨世界杯🏆呢"
+            android:clickable="true"
+            android:focusable="true"/>
+    </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

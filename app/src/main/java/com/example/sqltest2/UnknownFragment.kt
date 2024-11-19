@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.GridLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.PopupMenu
@@ -78,6 +79,19 @@ class UnknownFragment : Fragment() {
             recyclerView = view.findViewById(R.id.recyclerView)
             inputText = view.findViewById(R.id.inputText)
             sendButton = view.findViewById(R.id.sendButton)
+
+            val message1 = view.findViewById<TextView>(R.id.message1)
+            val message2 = view.findViewById<TextView>(R.id.message2)
+            val message3 = view.findViewById<TextView>(R.id.message3)
+//            val message4 = view.findViewById<TextView>(R.id.message4)
+//            val message5 = view.findViewById<TextView>(R.id.message5)
+
+            // 设置点击事件
+            message1.setOnClickListener { sendMessageAndHide("你好鸭\uD83E\uDD86！很高兴见到你") }
+            message2.setOnClickListener { sendMessageAndHide("\uD83C\uDFEB 浙农林在哪? \uD83C\uDFEB") }
+            message3.setOnClickListener { sendMessageAndHide("中国男足❤\uFE0F\uD83E\uDDE1\uD83D\uDC9B是否晋级2026年美加墨世界杯\uD83C\uDFC6呢") }
+//            message4.setOnClickListener { sendMessageAndHide("周末行程") }
+//            message5.setOnClickListener { sendMessageAndHide("足球赛规则") }
 
             chatAdapter = ChatAdapter(chatMessages)
             recyclerView.layoutManager = LinearLayoutManager(context)
@@ -172,6 +186,17 @@ class UnknownFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         Glide.with(this).clear(userInfoImageView)
+    }
+
+    //TO DO
+    // 发送消息并隐藏图标和消息框
+    private fun sendMessageAndHide(message: String) {
+        addMessage(message, true) // 添加用户消息
+        sendMessage(message)
+        inputText.text.clear() // 清空输入框
+        checkChatMessages() // 检查聊天消息
+        view?.findViewById<ImageView>(R.id.gptImage)?.visibility = View.GONE // 隐藏图标
+        view?.findViewById<LinearLayout>(R.id.messageContainer)?.visibility = View.GONE // 隐藏消息框
     }
 
     private fun showAiMenu(view: View) {
@@ -427,8 +452,10 @@ class UnknownFragment : Fragment() {
     private fun checkChatMessages() {
         if (chatMessages.isEmpty()) {
             gptImageView.visibility = View.VISIBLE
+            view?.findViewById<LinearLayout>(R.id.messageContainer)?.visibility = View.VISIBLE // 修改为 GridLayout
         } else {
             gptImageView.visibility = View.GONE
+            view?.findViewById<LinearLayout>(R.id.messageContainer)?.visibility = View.GONE // 修改为 GridLayout
         }
     }
 
