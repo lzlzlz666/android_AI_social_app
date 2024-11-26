@@ -31,7 +31,7 @@ class MessagesActivity : AppCompatActivity() {
 
     private fun enterHall() {
         // 设置分布大厅的颜色为选中状态
-        binding.textViewHall.setTextColor(resources.getColor(R.color.colorPrimary))
+        binding.textViewHall.setTextColor(resources.getColor(R.color.colorAccent))
         // 设置我的发布的颜色为未选中状态
         binding.textViewMyPublish.setTextColor(resources.getColor(R.color.gray))
         // 显示分布大厅的内容
@@ -40,7 +40,7 @@ class MessagesActivity : AppCompatActivity() {
 
     private fun myPublish() {
         // 设置我的发布的颜色为选中状态
-        binding.textViewMyPublish.setTextColor(resources.getColor(R.color.colorPrimary))
+        binding.textViewMyPublish.setTextColor(resources.getColor(R.color.colorAccent))
         // 设置分布大厅的颜色为未选中状态
         binding.textViewHall.setTextColor(resources.getColor(R.color.gray))
         // 显示我的发布的内容

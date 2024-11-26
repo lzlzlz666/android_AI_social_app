@@ -1,6 +1,8 @@
 package com.example.sqltest2
 
 import android.os.Bundle
+import android.view.View
+import android.view.WindowInsets
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -8,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sqltest2.adapters.ThemeAdapter
 import com.example.sqltest2.api.ThemeApiService
+import com.example.sqltest2.utils.StatusSettings
 import kotlinx.coroutines.launch
 
 class selectThemeActivity : AppCompatActivity() {
@@ -21,6 +24,9 @@ class selectThemeActivity : AppCompatActivity() {
 
         // 初始化 API 服务
         themeApiService = ThemeApiService()
+
+        // 隐藏状态栏，下拉不出现
+        StatusSettings.hideStatusBar(window)
 
         // 设置 RecyclerView
         val themeRecyclerView: RecyclerView = findViewById(R.id.themeRecyclerView)

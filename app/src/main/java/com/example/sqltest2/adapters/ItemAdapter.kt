@@ -66,7 +66,7 @@ class ItemAdapter(private val itemList: List<Item>,  private val listener: OnIte
         }
 
         private fun updateLikeIcon(item: Item) {
-            val colorResId = if (item.isLiked) R.color.red else R.color.gray // 根据状态设置颜色
+            val colorResId = if (item.isLiked) R.color.red else R.color.graygray // 根据状态设置颜色
             binding.imageViewLike.setColorFilter(binding.imageViewLike.context.getColor(colorResId))
 
         }

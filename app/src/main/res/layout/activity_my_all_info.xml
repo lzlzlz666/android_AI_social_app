@@ -1,114 +1,188 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:background="@color/white"
-    android:elevation="4dp"
-    android:layout_marginTop="40dp">
+    android:background="#EFF3F4">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:background="#EFF3F4"
+        android:layout_marginTop="30dp"
         android:layout_marginBottom="8dp">
+
+        <ImageView
+            android:id="@+id/arrowHead"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:contentDescription="小图标"
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/arrowhead_left" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="10"
+            android:text="个人信息"
+            android:textSize="20sp"
+            android:gravity="center"
+            />
+
+        <ImageView
+            android:id="@+id/update_button"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:contentDescription="修改"
+            android:layout_marginRight="20dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/update" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="30dp"
+        android:background="@color/white">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Username:"
+            android:text="头像"
+            android:layout_marginLeft="20sp"
             android:textSize="18sp"
-            android:textColor="#333333"
-            android:textStyle="bold"/>
+            android:textColor="#333333" />
+
+        <ImageView
+            android:id="@+id/profileImage"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/github" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="8dp"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="用户名"
+            android:layout_marginLeft="20sp"
+            android:textSize="18sp"
+            android:textColor="#333333" />
 
         <TextView
             android:id="@+id/username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="10sp"
             android:text="example_user"
-            android:textSize="18sp"
-            android:textColor="#333333"/>
+            android:textSize="16sp"
+            android:textColor="#767575"/>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:orientation="horizontal"
-        android:layout_marginBottom="8dp">
+        android:gravity="center"
+        android:layout_marginBottom="8dp"
+        android:background="@color/white">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Nickname:"
+            android:text="昵称"
+            android:layout_marginLeft="20sp"
             android:textSize="18sp"
-            android:textColor="#333333"
-            android:textStyle="bold"/>
+            android:textColor="#333333" />
 
         <TextView
             android:id="@+id/nickname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Example Nickname"
-            android:textSize="18sp"
-            android:textColor="#333333"/>
+            android:layout_marginRight="10sp"
+            android:textSize="16sp"
+            android:textColor="#767575"/>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:orientation="horizontal"
-        android:layout_marginBottom="8dp">
+        android:gravity="center"
+        android:layout_marginBottom="30dp"
+        android:background="@color/white">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Created At:"
+            android:text="邮件"
+            android:layout_marginLeft="18sp"
             android:textSize="18sp"
-            android:textColor="#333333"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:id="@+id/createtime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="2024-09-23 12:34"
-            android:textSize="18sp"
-            android:textColor="#333333"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Email:"
-            android:textSize="18sp"
-            android:textColor="#333333"
-            android:textStyle="bold"/>
+            android:textColor="#333333" />
 
         <TextView
             android:id="@+id/email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="1398596334@qq.com"
-            android:textSize="18sp"
-            android:textColor="#333333"/>
+            android:layout_marginRight="10sp"
+            android:textSize="16sp"
+            android:textColor="#767575"/>
     </LinearLayout>
 
-    <Button
-        android:id="@+id/update_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="我要更改"
-        android:layout_marginTop="16dp"
-        android:layout_gravity="center"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="8dp"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="创建时间"
+            android:layout_marginLeft="20sp"
+            android:textSize="18sp"
+            android:textColor="#333333" />
+
+        <TextView
+            android:id="@+id/createtime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2024-09-23 12:34"
+            android:layout_marginRight="10sp"
+            android:textSize="16sp"
+            android:textColor="#767575"/>
+    </LinearLayout>
+
+<!--    <Button-->
+<!--        android:id="@+id/update_button"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="我要更改"-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        android:layout_gravity="center"/>-->
 
 </LinearLayout>

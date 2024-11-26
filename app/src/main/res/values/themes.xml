@@ -2,8 +2,10 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.SqlTest2" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-        <item name="colorPrimary">@color/white</item>  <!-- 顶栏的主色 -->
+        <!-- 状态栏颜色设置为透明 -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <!-- 设置状态栏文字颜色为深色（适合浅色背景） -->
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <style name="Theme.SqlTest2" parent="Base.Theme.SqlTest2" />

@@ -1,26 +1,25 @@
 package com.example.sqltest2
 
-import okhttp3.*
 import android.app.Activity
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide  // 引入 Glide
-import com.example.sqltest2.MyMessagesAdapter
-import com.example.sqltest2.R
 import com.example.sqltest2.api.ApiMyListService
 import com.example.sqltest2.api.ApiUploadService
 import com.example.sqltest2.api.ApiUserService
@@ -30,8 +29,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import androidx.lifecycle.lifecycleScope
+import com.example.sqltest2.utils.StatusSettings
 import java.io.File
 
+@Suppress("DEPRECATION")
 class MyInfoFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
@@ -46,6 +47,20 @@ class MyInfoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.activity_my_info_fragment, container, false)
+
+//        // 让布局扩展到状态栏区域
+//        requireActivity().window.decorView.systemUiVisibility = (
+//                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or  // 布局扩展至状态栏区域
+//                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE      // 保持布局稳定
+//                )
+//
+//        // 设置透明状态栏
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            requireActivity().window.statusBarColor = Color.TRANSPARENT
+//        }
+//
+//        // 设置根布局背景透明（避免被其他背景遮挡）
+//        view.setBackgroundColor(Color.TRANSPARENT)
 
         profileImage = view.findViewById(R.id.profileImage)
         loadUserProfileImage()
@@ -84,6 +99,7 @@ class MyInfoFragment : Fragment() {
                         .error(R.drawable.error)
                         .circleCrop()
                         .into(profileImage)
+
                 } else {
                     Toast.makeText(requireContext(), errorMessage ?: "加载用户信息失败", Toast.LENGTH_SHORT).show()
                 }
@@ -190,4 +206,6 @@ class MyInfoFragment : Fragment() {
             }
         }
     }
+
+
 }
