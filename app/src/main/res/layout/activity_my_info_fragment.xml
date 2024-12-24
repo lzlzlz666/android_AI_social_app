@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <!-- FrameLayout 容器 -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="280dp">
+
+        <!-- 背景图片 -->
+        <ImageView
+            android:id="@+id/imgPos"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/my_info_bg"
+            android:contentDescription="Image" />
+
+        <!-- 圆形头像 -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_gravity="center"
+            app:cardCornerRadius="80dp"
+            app:cardElevation="4dp"
+            android:layout_margin="8dp"
+            app:cardBackgroundColor="@android:color/white">
+
+            <ImageView
+                android:id="@+id/profileImage"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"
+                android:src="@drawable/loading"
+                android:contentDescription="Profile Picture"/>
+        </androidx.cardview.widget.CardView>
+
+    </FrameLayout>
+
+    <!-- RecyclerView 显示微信信息 -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/MyAllInfo"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/white"/>
+</LinearLayout>

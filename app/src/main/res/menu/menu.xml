@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/LayoutFirstPage"
+        android:icon="@drawable/baseline_home_24"
+        android:title="首页" />
+
+    <item
+        android:id="@+id/what"
+        android:icon="@drawable/baseline_search_24"
+        android:title="AI互动" />
+
+    <item
+        android:id="@+id/myInfo"
+        android:icon="@drawable/baseline_insert_emoticon_24"
+        android:title="我的" />
+
+</menu>

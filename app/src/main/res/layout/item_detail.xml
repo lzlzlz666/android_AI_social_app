@@ -1,0 +1,82 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:src="@drawable/basketball_2"
+        android:layout_width="match_parent"
+        android:layout_height="480dp"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@+id/textViewTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8sp"
+        android:paddingLeft="12sp"
+        android:paddingRight="12sp"
+        android:text="凯里欧文来了"
+        android:textSize="17sp"
+        android:textColor="#01579B"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textViewContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:text="hello!world!"
+        android:textColor="#FF000000"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/dataTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="2024-10-29 浙江"
+        android:paddingTop="18dp"
+        android:paddingBottom="18dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="8dp"
+        android:textSize="11sp"
+        android:layout_marginTop="0dp"
+        android:textColor="#FF888888"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#BDBDBD"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"/>
+
+    <TextView
+        android:id="@+id/repliesText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="来看看所有的评论吧"
+        android:textColor="#757575"
+        android:textSize="14sp"
+        android:padding="16dp"/>
+
+    <ImageView
+        android:id="@+id/NoComment"
+        android:src="@drawable/no_comment"
+        android:layout_marginTop="30dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
+    <!-- 评论区域 RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewComments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"/>
+
+</LinearLayout>

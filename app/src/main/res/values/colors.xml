@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 基础颜色 -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="graygray">#B6B4B4</color>
+    <color name="gray">#FF808080</color>
+    <color name="dark_gray">#FF444444</color>
+    <color name="light_gray">#FFD3D3D3</color>
+    <color name="red">#FFFF0000</color>
+    <color name="green">#FF00FF00</color>
+    <color name="blue">#FF0000FF</color>
+    <color name="yellow">#FFFFFF00</color>
+    <color name="cyan">#FF00FFFF</color>
+    <color name="magenta">#FFFF00FF</color>
+
+    <!-- 常用现代颜色 -->
+    <color name="teal">#FF008080</color>
+    <color name="purple">#FF800080</color>
+    <color name="orange">#FFFFA500</color>
+    <color name="pink">#FFFFC0CB</color>
+    <color name="brown">#FFA52A2A</color>
+    <color name="light_blue">#FFADD8E6</color>
+    <color name="dark_blue">#FF00008B</color>
+
+    <!-- 现代配色方案 -->
+    <color name="primary">#FF6200EA</color> <!-- 深紫色 (Primary) -->
+    <color name="primary_dark">#FF3700B3</color> <!-- 深紫色加深 (Primary Dark) -->
+    <color name="accent">#FF03DAC5</color> <!-- 浅蓝绿色 (Accent) -->
+
+    <!-- 中性色 -->
+    <color name="light_background">#FFF5F5F5</color>
+    <color name="dark_background">#FF2C2C2C</color>
+    <color name="light_surface">#FFFFFFFF</color>
+    <color name="dark_surface">#FF121212</color>
+    <color name="on_light_surface">#FF000000</color>
+    <color name="on_dark_surface">#FFFFFFFF</color>
+
+    <!-- 平面设计流行色 -->
+    <color name="deep_orange">#FFFF5722</color>
+    <color name="amber">#FFFFC107</color>
+    <color name="lime">#FFCDDC39</color>
+    <color name="deep_purple">#FF673AB7</color>
+    <color name="indigo">#FF3F51B5</color>
+    <color name="light_green">#FF8BC34A</color>
+    <color name="blue_gray">#FF607D8B</color>
+
+    <color name="transparent">#00FFFFFF</color>
+
+    <!--  自定义  -->
+    <color name="redBookBox_frame">#F4F4F4</color>
+
+        <color name="colorPrimary">#6200EE</color>
+        <color name="colorPrimaryDark">#3700B3</color>
+        <color name="colorAccent">#03DAC5</color>
+        <color name="colorGray">#B0B0B0</color>
+        <color name="colorWhite">#FFFFFF</color>
+        <color name="colorDarkGray">#424242</color>
+
+</resources>

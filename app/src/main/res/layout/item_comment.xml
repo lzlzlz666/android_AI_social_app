@@ -1,0 +1,140 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="12dp"
+    android:paddingRight="12dp"
+    android:background="?android:attr/selectableItemBackground">
+
+    <!-- 评论的整体布局 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!-- 用户头像 -->
+        <ImageView
+            android:id="@+id/imageViewUser"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="10dp"
+            android:layout_gravity="start"
+            android:src="@drawable/basketball_2"
+            android:background="@drawable/circular_image"
+            android:clipToOutline="true"
+            android:scaleType="centerCrop" />
+
+        <!-- 用户名和评论内容、时间 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <!-- 用户名 -->
+                <TextView
+                    android:id="@+id/textViewUsername"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="用户名"
+                    android:textColor="#01579B"
+                    android:textStyle="bold"
+                    android:layout_gravity="start" />
+
+                <ImageView
+                    android:id="@+id/writer"
+                    android:src="@drawable/writer"
+                    android:paddingBottom="8dp"
+                    android:layout_width="40dp"
+                    android:layout_height="28dp"
+                    android:layout_gravity="center"
+                    android:visibility="visible" />
+
+                <!-- 回复按钮 -->
+                <TextView
+                    android:id="@+id/textViewReply"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="回复"
+                    android:textColor="#01579B"
+                    android:textSize="14sp"
+                    android:layout_marginStart="10dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="8dp"/>
+
+            </LinearLayout>
+
+            <!-- 评论内容 -->
+            <TextView
+                android:id="@+id/textViewContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="评论内容"
+                android:textColor="#000000"
+                android:textSize="14sp" />
+
+            <!-- 评论时间 -->
+            <TextView
+                android:id="@+id/textViewCreateTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="时间"
+                android:textSize="12sp"
+                android:textColor="#757575"
+                android:layout_marginTop="1dp" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <!-- 子评论的 RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewReplies"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="10dp" />
+
+    <!-- 回复部分，默认隐藏 -->
+    <LinearLayout
+        android:id="@+id/replySection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:paddingTop="10dp">
+
+        <!-- 输入框 -->
+        <EditText
+            android:id="@+id/editTextReply"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="请输入回复"
+            android:background="@drawable/redbook_box_background"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:padding="8dp"
+            android:layout_marginLeft="20dp"
+            android:singleLine="true" />
+
+        <!-- 发送按钮 -->
+        <Button
+            android:id="@+id/sendButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="发送"
+            android:backgroundTint="@color/red"
+            android:layout_marginLeft="10dp" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_marginTop="50dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="新增种类（含别名）"
+        android:textSize="30dp"
+        android:gravity="center"
+        android:background="@color/white"
+        />
+
+    <EditText
+        android:id="@+id/editCategoryName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:hint="输入类别名称"/>
+
+    <EditText
+        android:id="@+id/editCategoryAlias"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="输入类别别名"/>
+
+    <Button
+        android:id="@+id/buttonConfirm"
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/blue_gray"
+        android:text="确认"/>
+</LinearLayout>

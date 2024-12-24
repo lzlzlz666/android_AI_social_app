@@ -1,0 +1,157 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="1dp">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/moreOptions"
+            android:layout_width="0dp"
+            android:layout_weight="1.5"
+            android:layout_height="24dp"
+            android:src="@drawable/baseline_settings_24"
+            android:contentDescription="@string/setting"
+            android:layout_gravity="center"/>
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_weight="10"
+            android:layout_height="match_parent"
+            android:src="@drawable/label"/>
+
+    </LinearLayout>
+
+    <!-- 使用 FrameLayout 来重叠布局 -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="240dp">
+
+        <!-- 背景图片 -->
+        <ImageView
+            android:id="@+id/chatEnter"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/chat_enter2"/>
+
+        <!-- 搜索框和图标 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_gravity="center|top"
+            android:layout_marginTop="204dp"> <!-- 控制顶部间距 -->
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <!-- 搜索输入框 -->
+                <EditText
+                    android:id="@+id/searchInput"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:hint=" 🔍搜搜我的文件夹..."
+                    android:background="@drawable/search_box_background"
+                    android:textSize="16sp"
+                    android:padding="8dp"
+                    android:layout_marginLeft="10dp"
+                    android:singleLine="true" />
+
+                <!-- 搜索图标 -->
+                <ImageView
+                    android:id="@+id/searchIcon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="232dp"
+                    android:src="@drawable/baseline_saved_search_24"/>
+
+                <!-- 搜索按钮 -->
+                <TextView
+                    android:id="@+id/searchButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="搜索"
+                    android:textColor="@color/blue_gray"
+                    android:textSize="16sp"
+                    android:layout_marginStart="260dp"
+                    android:layout_marginTop="7dp"
+                    android:layout_gravity="center_vertical"/>
+
+            </RelativeLayout>
+        </LinearLayout>
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center">
+
+        <!-- 删除按钮 -->
+        <Button
+            android:id="@+id/cancelDeleteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="取消删除"
+            android:backgroundTint="@color/blue_gray"
+            android:textColor="@color/white"
+            android:padding="12dp"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone" /> <!-- 默认隐藏 -->
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dp"
+            android:gravity="center"
+            android:text="我后悔了，我想取消删除的操作"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:visibility="gone" />
+
+        <!-- 删除按钮 -->
+        <Button
+            android:id="@+id/updateButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="取消修改"
+            android:backgroundTint="@color/blue_gray"
+            android:textColor="@color/white"
+            android:padding="12dp"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone" /> <!-- 默认隐藏 -->
+
+        <TextView
+            android:id="@+id/updateDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dp"
+            android:gravity="center"
+            android:text="我后悔了，我想取消修改的操作"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/Categories"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="4dp"
+        android:background="@color/white"/>
+</LinearLayout>

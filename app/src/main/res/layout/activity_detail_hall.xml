@@ -1,0 +1,94 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/goBack"
+            android:src="@drawable/baseline_keyboard_return_24"
+            android:layout_width="40dp"
+            android:layout_height="40dp"/>
+
+        <ImageView
+            android:id="@+id/imageUserView"
+            android:src="@drawable/wrx"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="12dp"
+            android:background="@drawable/circular_image"
+            android:clipToOutline="true"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:id="@+id/username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="皮蛋也是蛋"
+            android:layout_marginLeft="14dp"
+            android:layout_gravity="center"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/send"
+            android:src="@drawable/baseline_send_24"
+            android:layout_marginLeft="160dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"/>
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="9"
+        android:background="@color/white"/>
+
+    <LinearLayout
+        android:visibility="visible"
+        android:id="@+id/inputText"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:padding="18dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/redBook"
+            android:src="@drawable/redbook"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="12dp"
+            android:background="@drawable/circular_image"
+            android:clipToOutline="true"
+            android:scaleType="centerCrop" />
+
+        <EditText
+            android:id="@+id/commentSubmit"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:hint=" 有话要说， 快来评论"
+            android:background="@drawable/redbook_box_background"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:padding="8dp"
+            android:layout_marginLeft="20dp"
+            android:singleLine="true" />
+
+        <Button
+            android:id="@+id/sendButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:backgroundTint="@color/red"
+            android:text="发送" />
+    </LinearLayout>
+
+
+</LinearLayout>

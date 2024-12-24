@@ -1,0 +1,16 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:right="2dp" android:left="2dp" android:top="2dp" android:bottom="2dp">
+        <shape>
+            <solid android:color="#B0B0B0"/> <!-- 阴影颜色 -->
+            <corners android:radius="10dp"/> <!-- 圆角半径 -->
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <solid android:color="#FFFFFF"/> <!-- 输入框背景色 -->
+            <corners android:radius="10dp"/> <!-- 圆角半径 -->
+            <stroke android:width="2dp" android:color="#f5f5f5"/> <!-- 边框 -->
+            <padding android:left="16dp" android:top="10dp" android:right="16dp" android:bottom="10dp"/>
+        </shape>
+    </item>
+</layer-list>

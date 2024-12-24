@@ -1,0 +1,7 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/redBookBox_frame" /> <!-- 背景颜色 -->
+    <corners android:radius="50dp" /> <!-- 圆角半径 -->
+    <stroke
+        android:width="3dp"
+        android:color="@color/redBookBox_frame" />
+</shape>

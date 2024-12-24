@@ -1,0 +1,83 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="?android:attr/selectableItemBackground"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp">
+
+    <!-- 文章标题 -->
+    <TextView
+        android:id="@+id/articleTitleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="文章标题"
+        android:layout_marginTop="10dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black" />
+
+    <!-- 用户头像和创建时间 -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="6dp">
+
+        <!-- 用户头像 -->
+        <ImageView
+            android:id="@+id/articleUserAvatar"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/wrx"
+            android:background="@drawable/circular_image"
+            android:clipToOutline="true" /> <!-- 使用占位符图片，可替换为动态加载的用户头像 -->
+
+        <!-- 用户创建时间 -->
+        <TextView
+            android:id="@+id/username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🤡linzhou"
+            android:textSize="12sp"
+            android:textColor="#6B6767"
+            android:layout_marginStart="12dp"/>
+    </LinearLayout>
+
+    <!-- 文章内容 -->
+    <TextView
+        android:id="@+id/articleContentTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="文章内容"
+        android:textSize="14sp"
+        android:textColor="#6B6767"
+        android:layout_marginTop="6dp"/>
+
+    <TextView
+        android:id="@+id/articleCreateTimeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2024-01-01 12:00"
+        android:textSize="12dp"
+        android:textColor="#9D9696"
+        android:layout_marginTop="6dp"/>
+
+    <!-- 灰色的分割线 -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.2dp"
+        android:background="@android:color/darker_gray"
+        android:layout_marginTop="10dp"/>
+
+    <ImageView
+        android:id="@+id/NoArticle"
+        android:layout_width="match_parent"
+        android:layout_height="600dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/no_article2"
+        android:visibility="gone"/>
+
+</LinearLayout>
