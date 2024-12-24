@@ -46,21 +46,12 @@ class MyInfoFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // 设置状态栏透明
+        setTransparentStatusBar()
+
+
         val view = inflater.inflate(R.layout.activity_my_info_fragment, container, false)
 
-//        // 让布局扩展到状态栏区域
-//        requireActivity().window.decorView.systemUiVisibility = (
-//                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or  // 布局扩展至状态栏区域
-//                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE      // 保持布局稳定
-//                )
-//
-//        // 设置透明状态栏
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            requireActivity().window.statusBarColor = Color.TRANSPARENT
-//        }
-//
-//        // 设置根布局背景透明（避免被其他背景遮挡）
-//        view.setBackgroundColor(Color.TRANSPARENT)
 
         profileImage = view.findViewById(R.id.profileImage)
         loadUserProfileImage()
@@ -83,6 +74,18 @@ class MyInfoFragment : Fragment() {
         }
 
         return view
+    }
+
+    private fun setTransparentStatusBar() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            // 设置透明状态栏
+            activity?.window?.apply {
+                // 取消状态栏背景
+                addFlags(android.view.WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+                clearFlags(android.view.WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+                statusBarColor = Color.TRANSPARENT // 设置状态栏透明
+            }
+        }
     }
 
     private fun loadUserProfileImage() {

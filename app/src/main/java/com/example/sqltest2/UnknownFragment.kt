@@ -3,13 +3,13 @@ package com.example.sqltest2
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.EditText
-import android.widget.GridLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.PopupMenu
@@ -25,20 +25,13 @@ import com.bumptech.glide.Glide
 import com.example.sqltest2.api.ApiUserService.getUserInfo
 import com.example.sqltest2.api.ChatService
 import com.example.sqltest2.models.ChatMessage
-import com.example.sqltest2.utils.JWTStorageHelper
 import com.example.sqltest2.utils.SparkManager
+import com.example.sqltest2.utils.SpeechRecognizerUtil
 import com.google.android.material.navigation.NavigationView
-import com.iflytek.sparkchain.core.LLM
-import com.iflytek.sparkchain.core.LLMFactory
-import com.iflytek.sparkchain.core.Memory
-import com.iflytek.sparkchain.core.SparkChain
-import com.iflytek.sparkchain.core.SparkChainConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.OkHttpClient
 import org.json.JSONArray
-import org.json.JSONObject
 
 class UnknownFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
@@ -49,6 +42,7 @@ class UnknownFragment : Fragment() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
     private lateinit var gptImageView: ImageView
+    private lateinit var gptText: TextView
     private lateinit var userInfoImageView: ImageView
     private lateinit var usernameTextView: TextView
     private val savedMessages = mutableListOf<ChatMessage>()
@@ -56,14 +50,31 @@ class UnknownFragment : Fragment() {
     private var isInitialized = false // 控制初始化状态
     private val sparkManager = SparkManager.getInstance()
 
+    private lateinit var voiceInputButton: ImageView
+
+
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        // 确保在这里返回视图
         val view = inflater.inflate(R.layout.activity_unknown_fragment, container, false)
+
+        // 初始化语音识别
+        SpeechRecognizerUtil.init(requireContext())
+
+        inputText = view.findViewById(R.id.inputText)
+        voiceInputButton = view.findViewById(R.id.voiceInputButton)
+
+        // 设置语音输入按钮点击事件
+        voiceInputButton.setOnClickListener {
+            val intent = SpeechRecognizerUtil.createRecognizerIntent()
+            SpeechRecognizerUtil.startListening(requireContext(), intent) { result ->
+                inputText.setText(result)  // 将语音识别结果填充到输入框
+            }
+        }
+
         return view
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -71,6 +82,7 @@ class UnknownFragment : Fragment() {
             isInitialized = true
 
             gptImageView = view.findViewById(R.id.gptImage)
+            gptText = view.findViewById(R.id.gptText)
             drawerLayout = view.findViewById(R.id.drawer_layout)
             navigationView = view.findViewById(R.id.nav_view)
             userInfoImageView = view.findViewById(R.id.userInfo)
@@ -98,6 +110,20 @@ class UnknownFragment : Fragment() {
             recyclerView.adapter = chatAdapter
 
             initSDK()
+
+            inputText.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) {}
+
+                override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {}
+
+                override fun afterTextChanged(editable: Editable?) {
+                    if (editable.isNullOrEmpty()) {
+                        sendButton.setImageResource(R.drawable.chatsend_1)  // Empty text, chat send 1
+                    } else {
+                        sendButton.setImageResource(R.drawable.chatsend_3)  // Non-empty text, chat send 2
+                    }
+                }
+            })
 
             sendButton.setOnClickListener {
                 val question = inputText.text.toString()
@@ -452,9 +478,11 @@ class UnknownFragment : Fragment() {
     private fun checkChatMessages() {
         if (chatMessages.isEmpty()) {
             gptImageView.visibility = View.VISIBLE
+            gptText.visibility = View.VISIBLE
             view?.findViewById<LinearLayout>(R.id.messageContainer)?.visibility = View.VISIBLE // 修改为 GridLayout
         } else {
             gptImageView.visibility = View.GONE
+            gptText.visibility = View.GONE
             view?.findViewById<LinearLayout>(R.id.messageContainer)?.visibility = View.GONE // 修改为 GridLayout
         }
     }
@@ -494,4 +522,6 @@ class UnknownFragment : Fragment() {
 
         checkChatMessages()
     }
+
+
 }

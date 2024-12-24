@@ -6,9 +6,18 @@
     android:background="@color/white">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_width="380dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="6dp"
+            android:src="@drawable/redbook" />
 
         <TextView
             android:id="@+id/textViewHall"
@@ -18,7 +27,7 @@
             android:text="分布大厅"
             android:textSize="16sp"
             android:gravity="center"
-            android:padding="16dp"
+            android:padding="6dp"
             android:background="?android:attr/selectableItemBackground"
             android:textColor="@android:color/black"/>
 
@@ -30,9 +39,16 @@
             android:text="我的发布"
             android:textSize="16sp"
             android:gravity="center"
-            android:padding="16dp"
+            android:padding="6dp"
             android:background="?android:attr/selectableItemBackground"
             android:textColor="@android:color/black"/>
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="6dp"
+            android:src="@drawable/search" />
+
     </LinearLayout>
 
     <FrameLayout

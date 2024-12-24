@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -33,6 +34,9 @@ class HomeFragment : Fragment() {
     private lateinit var updateDescriptionTextView: TextView
     private lateinit var searchInput: EditText
     private lateinit var searchButton: TextView
+
+    // 请求码
+    private val addCategoryRequestCode = 1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -127,9 +131,9 @@ class HomeFragment : Fragment() {
         popupMenu.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.add_option -> {
-                    // 处理新增操作
+                    // 启动 AddCategoryActivity，并等待结果返回
                     val intent = Intent(requireContext(), AddCategoryActivity::class.java)
-                    startActivity(intent)
+                    startActivityForResult(intent, addCategoryRequestCode)
                     true
                 }
                 R.id.delete_option -> {
@@ -193,6 +197,15 @@ class HomeFragment : Fragment() {
                     categoryAdapter.notifyDataSetChanged()
                 }
             }
+        }
+    }
+
+    // 处理从 AddCategoryActivity 返回的结果
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == addCategoryRequestCode && resultCode == AppCompatActivity.RESULT_OK) {
+            // 新增分类成功，重新加载分类数据
+            loadCategories()
         }
     }
 }

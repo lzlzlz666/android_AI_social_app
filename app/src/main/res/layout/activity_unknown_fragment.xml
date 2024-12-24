@@ -20,6 +20,13 @@
             android:elevation="1dp">
 
             <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ai"
+                android:contentDescription="@string/setting"
+                android:layout_centerVertical="true"/>
+
+            <ImageView
                 android:id="@+id/moreOptions"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
@@ -34,8 +41,9 @@
                 android:layout_height="wrap_content"
                 android:text="轻享 AI"
                 android:textSize="22sp"
-                android:layout_marginLeft="16dp"
+                android:layout_marginLeft="32dp"
                 android:gravity="center_vertical"
+                android:layout_marginTop="-2dp"
                 android:textColor="@color/black"/> <!-- 设置文本颜色 -->
         </RelativeLayout>
 
@@ -53,6 +61,18 @@
                 android:src="@drawable/gpt2"
                 android:layout_centerInParent="true"
                 android:visibility="visible"/>  <!-- 初始状态为 visible -->
+
+            <TextView
+                android:id="@+id/gptText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="有什么可以帮忙的吗?"
+                android:textSize="16sp"
+                android:textColor="#000000"
+                android:layout_below="@id/gptImage"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:visibility="visible"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
@@ -121,22 +141,34 @@
             android:gravity="center_vertical"
             android:padding="8dp">
 
+            <ImageView
+                android:id="@+id/voiceInputButton"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="30dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/say"
+                android:background="@drawable/circular_image"
+                android:clipToOutline="true"
+                android:layout_marginStart="0dp" />
+
             <EditText
                 android:id="@+id/inputText"
                 android:layout_width="0dp"
-                android:layout_weight="7.6"
+                android:layout_weight="9"
                 android:layout_height="50dp"
                 android:background="@drawable/chat_edittext_background"
                 android:hint=" 消息..."
                 android:padding="8dp" />
 
+
             <ImageView
                 android:id="@+id/sendButton"
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_weight="1.3"
                 android:layout_height="42dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/chat_send"
+                android:src="@drawable/chatsend_1"
                 android:background="@drawable/circular_image"
                 android:clipToOutline="true"
                 android:layout_marginStart="20dp" />
@@ -190,7 +222,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:text="ChatGPT"
+                    android:text=" 轻享 AI "
                     android:layout_gravity="center"
                     android:textSize="15sp"
                     android:textColor="@android:color/black"/>

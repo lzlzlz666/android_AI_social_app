@@ -41,8 +41,8 @@ class AddCategoryActivity : AppCompatActivity() {
                             // 新增成功，显示提示信息并关闭 Activity
                             Toast.makeText(this@AddCategoryActivity, "新增成功: $categoryName ($categoryAlias)", Toast.LENGTH_SHORT).show()
 
-                            // 使用 this@AddCategoryActivity 代替 requireContext()
-                            ApiCategoryService.getCategories(this@AddCategoryActivity)
+                            // 返回成功结果到 HomeFragment
+                            setResult(RESULT_OK)
                             finish() // 结束当前Activity
                         } else {
                             // 显示错误信息
